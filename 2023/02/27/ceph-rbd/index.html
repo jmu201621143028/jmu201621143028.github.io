@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="简介创建rbd-pool, 创建imageCREATE A BLOCK DEVICE POOL1$ rbd pool init &lt;pool-name&gt; CREATE A BLOCK DEVICE USER 这部分我的理解还不够，暂时略过。直接参考官方文档会更好。   CREATING A BLOCK DEVICE IMAGE1$ rbd create --size &amp;#123;mega">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ceph-rbd">
+<meta property="og:url" content="http://example.com/2023/02/27/ceph-rbd/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="简介创建rbd-pool, 创建imageCREATE A BLOCK DEVICE POOL1$ rbd pool init &lt;pool-name&gt; CREATE A BLOCK DEVICE USER 这部分我的理解还不够，暂时略过。直接参考官方文档会更好。   CREATING A BLOCK DEVICE IMAGE1$ rbd create --size &amp;#123;mega">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-02-27T11:55:48.000Z">
+<meta property="article:modified_time" content="2023-02-27T06:24:50.636Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2023/02/27/ceph-rbd/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>ceph-rbd | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/27/ceph-rbd/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ceph-rbd
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-02-27 11:55:48 / Modified: 06:24:50" itemprop="dateCreated datePublished" datetime="2023-02-27T11:55:48+00:00">2023-02-27</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/quincy/rbd/index.html">简介</a></h1><h2 id="创建rbd-pool-创建image"><a href="#创建rbd-pool-创建image" class="headerlink" title="创建rbd-pool, 创建image"></a>创建rbd-pool, 创建image</h2><h3 id="CREATE-A-BLOCK-DEVICE-POOL"><a href="#CREATE-A-BLOCK-DEVICE-POOL" class="headerlink" title="CREATE A BLOCK DEVICE POOL"></a>CREATE A BLOCK DEVICE POOL</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">rbd pool init &lt;pool-name&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="CREATE-A-BLOCK-DEVICE-USER"><a href="#CREATE-A-BLOCK-DEVICE-USER" class="headerlink" title="CREATE A BLOCK DEVICE USER"></a>CREATE A BLOCK DEVICE USER</h3><p> 这部分我的理解还不够，暂时略过。直接参考官方文档会更好。  </p>
+<h3 id="CREATING-A-BLOCK-DEVICE-IMAGE"><a href="#CREATING-A-BLOCK-DEVICE-IMAGE" class="headerlink" title="CREATING A BLOCK DEVICE IMAGE"></a>CREATING A BLOCK DEVICE IMAGE</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">rbd create --size &#123;megabytes&#125; &#123;pool-name&#125;/&#123;image-name&#125;</span></span><br></pre></td></tr></table></figure>
+<p>实例</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rbd create nrbd.img --size 50G --pool rbd-pool</span><br></pre></td></tr></table></figure>
+<p>（我好像更喜欢各种风格的命令）</p>
+<h3 id="LISTING-BLOCK-DEVICE-IMAGES"><a href="#LISTING-BLOCK-DEVICE-IMAGES" class="headerlink" title="LISTING BLOCK DEVICE IMAGES"></a>LISTING BLOCK DEVICE IMAGES</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@ceph01 etc]# rbd ls --pool rbd-pool</span><br><span class="line">bar</span><br><span class="line">nnrbd.img</span><br><span class="line">nrbd.img</span><br><span class="line">rbd.img</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@ceph01 etc]# rbd info nnrbd.img --pool rbd-pool</span><br><span class="line">rbd image &#x27;nnrbd.img&#x27;:</span><br><span class="line">        size 50 GiB in 12800 objects</span><br><span class="line">        order 22 (4 MiB objects)</span><br><span class="line">        snapshot_count: 0</span><br><span class="line">        id: cb6eaf54bbe4</span><br><span class="line">        block_name_prefix: rbd_data.cb6eaf54bbe4</span><br><span class="line">        format: 2</span><br><span class="line">        features: layering, exclusive-lock</span><br><span class="line">        op_features:</span><br><span class="line">        flags:</span><br><span class="line">        create_timestamp: Mon Feb 27 11:09:59 2023</span><br><span class="line">        access_timestamp: Mon Feb 27 11:09:59 2023</span><br><span class="line">        modify_timestamp: Mon Feb 27 11:09:59 2023</span><br></pre></td></tr></table></figure>
+
+<h2 id="客户端挂载"><a href="#客户端挂载" class="headerlink" title="客户端挂载"></a>客户端挂载</h2><p>参考这篇<a target="_blank" rel="noopener" href="https://www.cnblogs.com/zhrx/p/16098075.html">博客</a>可以知道</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cephadmin@ceph-deploy:~/ceph-cluster$ sudo scp ceph.conf ceph.client.admin.keyring root@192.168.1.180:/etc/ceph/</span><br></pre></td></tr></table></figure>
+<p>是需要把这些配置文件复制到客户端。<br>ok,我按照这样的操作执行啦。可是接下来的命令不能work。然后我就尝试了好多方法，去定位问题。我去看官方文档，但是似乎并没有合适的解决方法。<br>直到今天早上灵机一动。我想到了<code>server-client</code>通信的问题。所以我就恍然大悟啦。<br>既然要通信，那必须有网络（软件抽象），有网卡（硬件抽象）。那么<code>ceph</code>的通信是需要两个网络的，一个<code>public ip</code>，一个<code>private ip</code>。所以需要在客户端添加一个<code>private ip</code>.</p>
+<h2 id="ip配置"><a href="#ip配置" class="headerlink" title="ip配置"></a>ip配置</h2><p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000011954814">参考链接</a><br>查看网卡配置文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost etc]# cd /etc/sysconfig/network-scripts/</span><br><span class="line">[root@localhost network-scripts]# cat ifcfg-</span><br><span class="line">ifcfg-ens18  ifcfg-eth0   ifcfg-lo</span><br></pre></td></tr></table></figure>
+<p>重启网络</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart network</span><br></pre></td></tr></table></figure>
+<p>检查ceph连接状况</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost etc]# ceph -s</span><br><span class="line">  cluster:</span><br><span class="line">    id:     ba39b878-7aa9-45c3-b9d9-dab4a59bce4f</span><br><span class="line">    health: HEALTH_OK</span><br><span class="line"></span><br><span class="line">  services:</span><br><span class="line">    mon: 1 daemons, quorum mon1 (age 3d)</span><br><span class="line">    mgr: mon1(active, since 3d)</span><br><span class="line">    osd: 6 osds: 6 up (since 3d), 6 in (since 3d)</span><br><span class="line">    rgw: 1 daemon active (1 hosts, 1 zones)</span><br><span class="line"></span><br><span class="line">  data:</span><br><span class="line">    pools:   10 pools, 241 pgs</span><br><span class="line">    objects: 1.51k objects, 4.7 GiB</span><br><span class="line">    usage:   605 GiB used, 4.1 TiB / 4.7 TiB avail</span><br><span class="line">    pgs:     241 active+clean</span><br><span class="line"></span><br><span class="line">  io:</span><br><span class="line">    client:   27 KiB/s rd, 31 op/s rd, 0 op/s wr</span><br></pre></td></tr></table></figure>
+
+<h2 id="新的问题"><a href="#新的问题" class="headerlink" title="新的问题"></a>新的问题</h2><p>下一步我打算下载<code>fio</code>。但是遇到了新的错误。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yum install fio</span></span><br><span class="line">ndctl-libs-65-5.el7.x86_64.rpm FAILED</span><br><span class="line">https://mirrors.tuna.tsinghua.edu.cn/centos/7/os/x86_64/Packages/ndctl-libs-65-5.el7.x86_64.rpm: [Errno 14] curl#6 - &quot;Could not resolve host: mirrors.tuna.tsinghua.edu.cn; Unknown error&quot;</span><br></pre></td></tr></table></figure>
+<p>这错误上周也有遇到过。当时尝试了很多的错误方法，首先我认为是镜像源的问题，于是尝试更换了阿里镜像源，网易镜像源。但是都不行。因为看到是curl报的错，我还认为是curl的问题。<br>但是今天这个场景我就想到了是DNS的问题，因为我新添加的网卡没有配置DNS地址。  </p>
+<p>尝试ping百度也不行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost etc]# ping www.baidu.com</span><br><span class="line">ping: www.baidu.com: Name or service not known</span><br></pre></td></tr></table></figure>
+
+<p>修复方法<br>参考连接 <a target="_blank" rel="noopener" href="https://unix.stackexchange.com/questions/518266/ping-displays-name-or-service-not-known">stackexchange</a>,<br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/43366826/ping-http-google-com-name-or-service-not-known">stackoverflow</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost etc]# cat resolv.conf</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Generated by NetworkManager</span></span><br><span class="line">search domain.name</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line">nameserver 1.1.1.1</span><br><span class="line">nameserver 1.0.0.1</span><br><span class="line">[root@localhost etc]# systemctl restart NetworkManager</span><br><span class="line">[root@localhost etc]# ping www.baidu.com</span><br><span class="line">PING www.a.shifen.com (180.101.50.242) 56(84) bytes of data.</span><br><span class="line">64 bytes from 180.101.50.242 (180.101.50.242): icmp_seq=1 ttl=53 time=2.46 ms</span><br></pre></td></tr></table></figure>
+<p>（其实我最初的想法是添加路由，但是好像不太行）</p>
+<h2 id="当你对一个东西很熟悉的时候，解决问题的灵感自然就来了。"><a href="#当你对一个东西很熟悉的时候，解决问题的灵感自然就来了。" class="headerlink" title="当你对一个东西很熟悉的时候，解决问题的灵感自然就来了。"></a>当你对一个东西很熟悉的时候，解决问题的灵感自然就来了。</h2>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/02/24/%E4%BD%BF%E7%94%A8Netlink%E7%9B%91%E6%B5%8Blinux%E7%BD%91%E7%BB%9C%E7%8A%B6%E6%80%81/" rel="prev" title="使用Netlink监测linux网络状态">
+      <i class="fa fa-chevron-left"></i> 使用Netlink监测linux网络状态
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BArbd-pool-%E5%88%9B%E5%BB%BAimage"><span class="nav-number">1.1.</span> <span class="nav-text">创建rbd-pool, 创建image</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CREATE-A-BLOCK-DEVICE-POOL"><span class="nav-number">1.1.1.</span> <span class="nav-text">CREATE A BLOCK DEVICE POOL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CREATE-A-BLOCK-DEVICE-USER"><span class="nav-number">1.1.2.</span> <span class="nav-text">CREATE A BLOCK DEVICE USER</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CREATING-A-BLOCK-DEVICE-IMAGE"><span class="nav-number">1.1.3.</span> <span class="nav-text">CREATING A BLOCK DEVICE IMAGE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LISTING-BLOCK-DEVICE-IMAGES"><span class="nav-number">1.1.4.</span> <span class="nav-text">LISTING BLOCK DEVICE IMAGES</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8C%82%E8%BD%BD"><span class="nav-number">1.2.</span> <span class="nav-text">客户端挂载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ip%E9%85%8D%E7%BD%AE"><span class="nav-number">1.3.</span> <span class="nav-text">ip配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.4.</span> <span class="nav-text">新的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BD%93%E4%BD%A0%E5%AF%B9%E4%B8%80%E4%B8%AA%E4%B8%9C%E8%A5%BF%E5%BE%88%E7%86%9F%E6%82%89%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98%E7%9A%84%E7%81%B5%E6%84%9F%E8%87%AA%E7%84%B6%E5%B0%B1%E6%9D%A5%E4%BA%86%E3%80%82"><span class="nav-number">1.5.</span> <span class="nav-text">当你对一个东西很熟悉的时候，解决问题的灵感自然就来了。</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
