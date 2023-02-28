@@ -145,6 +145,70 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/28/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%B0%8F%E5%BC%80%E5%8F%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/02/28/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%B0%8F%E5%BC%80%E5%8F%91/" class="post-title-link" itemprop="url">记录一次小开发</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-02-28 12:23:11 / Modified: 06:01:54" itemprop="dateCreated datePublished" datetime="2023-02-28T12:23:11+00:00">2023-02-28</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>前几星期的晚上，有位朋友打电话问我一个问题。给定一个总价，和若干物品的单价。求出每个物品采购的数量，使得采购总和刚好等于给定的总价。<br>例如这样：<br><img src="/../images/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%B0%8F%E5%BC%80%E5%8F%91/problem.png"><br>他说：“他算了很久，都没有合适的结果。”我说：“电话不要挂断，我很快就帮你算出来。” 于是乎，我打开pycharm,几行python代码就算出来了合适的结果。(很快啊)<br><img src="/../images/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%B0%8F%E5%BC%80%E5%8F%91/ret.jpg"><br>他说：“计算机太牛了，比人的效率高太多了。这样的问题，我经常在工地上遇到，以后遇到了还找我算。”</p>
+<h2 id="开发需求"><a href="#开发需求" class="headerlink" title="开发需求"></a>开发需求</h2><p>   既然是经常遇到问题，那是不是应该开发一个合适的用户程序，让用户更加方便地使用起来呢。我总不能把我的代码直接丢给人家，让人家直接运行啊。代码的运行需要一个开发环境，总不能让人家配置一套python或者c++什么的开发环境吧。所以我们需要开发一个简单的GUI程序。<br>   总结一下当前比较火的GUI开发方向。移动端(主要设备是手机)，浏览器，PC桌面，小程序。其实我对浏览器的网页开发一直是非常刚兴趣的，因为跨平台，开源，有vue,react的开发框架。但是浏览器需要service,所以我放弃啦。ok那就移动端吧，但是我这位兄弟用的是苹果手机，我用的是小米手机。而且我也没有苹果电脑。所以我放弃啦。那就只能PC桌面啦，而且他身边也有电脑。<br><img src="/../images/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%B0%8F%E5%BC%80%E5%8F%91/%E9%9C%80%E6%B1%82%E8%B0%83%E6%9F%A5.jpg"></p>
+<h2 id="开发"><a href="#开发" class="headerlink" title="开发"></a>开发</h2><p>其实GUI开发一直是我弱项，整天把自己的学习精力放在探索计算机里没有黑魔法的事情上了。但是也不影响，看看<a target="_blank" rel="noopener" href="https://www.pythonguis.com/pyqt6-tutorial/">文档</a>就可以快速上手了。<br>简单画了一个布局，添加几个组件。几个小时就可以搞定。<br>为了支持可以动态添加物品，所以还需要一个递归的算法。自从看了SICP，对递归的理解更深了。递归代码也可以轻松拿捏。写之后才发现这个问题和著名的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98">背包问题</a>非常类似。所以算法是很重要，很核心的。</p>
+<h3 id="打包命令"><a href="#打包命令" class="headerlink" title="打包命令"></a>打包命令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pyinstaller -F main.py</span><br></pre></td></tr></table></figure>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p><img src="/../images/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%B0%8F%E5%BC%80%E5%8F%91/ans1.jpg"><br><img src="/../images/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%B0%8F%E5%BC%80%E5%8F%91/ans2.jpg"><br>ok,能用。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PyQt6.QtCore <span class="keyword">import</span> Qt</span><br><span class="line"><span class="keyword">from</span> PyQt6.QtWidgets <span class="keyword">import</span> (QWidget, QPushButton, QLineEdit,</span><br><span class="line">                             QInputDialog, QApplication, QLabel, QDialog, QDialogButtonBox, QVBoxLayout)</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">f_ret = []</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">f</span>(<span class="params">total, price, ix, args = []</span>):</span><br><span class="line">    p = price[ix - <span class="number">1</span>]</span><br><span class="line">    <span class="keyword">if</span> ix == <span class="built_in">len</span>(price):</span><br><span class="line">        <span class="keyword">if</span> total % p == <span class="number">0</span>:</span><br><span class="line">            f_ret.append(args + [total // p])</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, total // p):</span><br><span class="line">        f(total - p * i, price, ix + <span class="number">1</span>, args + [i])</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AnsDialog</span>(<span class="title class_ inherited__">QDialog</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, t, p</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.t = t</span><br><span class="line">        self.p = p</span><br><span class="line">        self.setWindowTitle(<span class="string">&quot;结果&quot;</span>)</span><br><span class="line"></span><br><span class="line">        self.layout = QVBoxLayout()</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(f_ret)):</span><br><span class="line">            ret = f_ret[i]</span><br><span class="line">            s = <span class="string">&quot;&quot;</span></span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(ret)):</span><br><span class="line">                s = s + <span class="built_in">str</span>(ret[j]) + <span class="string">&quot; * &quot;</span> + <span class="built_in">str</span>(self.p[j]) + <span class="string">&quot; + &quot;</span></span><br><span class="line">            s = s[:-<span class="number">3</span>] + <span class="string">&#x27; = &#x27;</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;s&#125;</span><span class="subst">&#123;self.t&#125;</span>&quot;</span>)    <span class="comment"># 输出到控制台窗口</span></span><br><span class="line">            message = QLabel(<span class="string">f&quot;<span class="subst">&#123;s&#125;</span><span class="subst">&#123;self.t&#125;</span>&quot;</span>)</span><br><span class="line">            self.layout.addWidget(message)</span><br><span class="line">        self.setLayout(self.layout)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Example</span>(<span class="title class_ inherited__">QWidget</span>):</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line"></span><br><span class="line">        self.initUI()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">initUI</span>(<span class="params">self</span>):</span><br><span class="line">        self.total_label = QLabel(self)</span><br><span class="line">        self.total_label.setText(<span class="string">&quot;总价&quot;</span>)</span><br><span class="line">        self.total_label.move(<span class="number">20</span>, <span class="number">20</span>)</span><br><span class="line">        self.total_price = QLineEdit(self)</span><br><span class="line">        self.total_price.move(<span class="number">50</span>, <span class="number">40</span>)</span><br><span class="line"></span><br><span class="line">        self.unit_label = QLabel(self)</span><br><span class="line">        self.unit_label.setText(<span class="string">&quot;单价&quot;</span>)</span><br><span class="line">        self.unit_label.move(<span class="number">20</span>, <span class="number">80</span>)</span><br><span class="line">        self.unit_price_list = []</span><br><span class="line">        unit_price = QLineEdit(self)</span><br><span class="line">        unit_price.move(<span class="number">50</span>, <span class="number">110</span>)</span><br><span class="line">        self.unit_price_list.append(unit_price)</span><br><span class="line"></span><br><span class="line">        self.add_btn = QPushButton(<span class="string">&#x27;+&#x27;</span>, self)</span><br><span class="line">        self.add_btn.move(<span class="number">50</span>, <span class="number">80</span>)</span><br><span class="line">        self.add_btn.clicked.connect(self.add_unit_price)</span><br><span class="line"></span><br><span class="line">        self.sub_btn = QPushButton(<span class="string">&#x27;-&#x27;</span>, self)</span><br><span class="line">        self.sub_btn.move(<span class="number">120</span>, <span class="number">80</span>)</span><br><span class="line">        self.sub_btn.clicked.connect(self.sub_unit_price)</span><br><span class="line"></span><br><span class="line">        self.calc_btn = QPushButton(<span class="string">&#x27;计算&#x27;</span>, self)</span><br><span class="line">        self.calc_btn.move(<span class="number">200</span>, <span class="number">80</span>)</span><br><span class="line">        self.calc_btn.clicked.connect(self.calc_price)</span><br><span class="line"></span><br><span class="line">        self.setGeometry(<span class="number">300</span>, <span class="number">300</span>, <span class="number">450</span>, <span class="number">350</span>)</span><br><span class="line">        self.setWindowTitle(<span class="string">&#x27;王工专用&#x27;</span>)</span><br><span class="line">        self.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">add_unit_price</span>(<span class="params">self</span>):</span><br><span class="line">        unit = self.unit_price_list[-<span class="number">1</span>]</span><br><span class="line">        x, y = unit.x(), unit.y()</span><br><span class="line"></span><br><span class="line">        unit = QLineEdit(self)</span><br><span class="line">        unit.move(x, y + <span class="number">25</span>)</span><br><span class="line">        unit.show()</span><br><span class="line">        self.unit_price_list.append(unit)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">sub_unit_price</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(self.unit_price_list) &gt; <span class="number">1</span>:</span><br><span class="line">            unit = self.unit_price_list.pop()</span><br><span class="line">            unit.close()</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">calc_price</span>(<span class="params">self</span>):</span><br><span class="line">        total = <span class="built_in">int</span>(self.total_price.text())</span><br><span class="line">        price = [i.text() <span class="keyword">for</span> i <span class="keyword">in</span> self.unit_price_list]</span><br><span class="line">        price = <span class="built_in">list</span>(<span class="built_in">set</span>(<span class="built_in">int</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> price))</span><br><span class="line">        f_ret.clear()</span><br><span class="line">        f(total, price, <span class="number">1</span>)</span><br><span class="line">        dlg = AnsDialog(total, price)</span><br><span class="line">        dlg.<span class="built_in">exec</span>()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    app = QApplication(sys.argv)</span><br><span class="line">    ex = Example()</span><br><span class="line">    sys.exit(app.<span class="built_in">exec</span>())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/27/ceph-rbd/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -168,10 +232,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-02-27 11:55:48 / Modified: 09:29:31" itemprop="dateCreated datePublished" datetime="2023-02-27T11:55:48+00:00">2023-02-27</time>
+              <time title="Created: 2023-02-27 11:55:48" itemprop="dateCreated datePublished" datetime="2023-02-27T11:55:48+00:00">2023-02-27</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-02-28 06:01:54" itemprop="dateModified" datetime="2023-02-28T06:01:54+00:00">2023-02-28</time>
+              </span>
 
           
 
@@ -263,7 +333,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-02-27 09:29:31" itemprop="dateModified" datetime="2023-02-27T09:29:31+00:00">2023-02-27</time>
+                <time title="Modified: 2023-02-28 06:01:54" itemprop="dateModified" datetime="2023-02-28T06:01:54+00:00">2023-02-28</time>
               </span>
 
           
@@ -331,7 +401,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-02-27 09:29:31" itemprop="dateModified" datetime="2023-02-27T09:29:31+00:00">2023-02-27</time>
+                <time title="Modified: 2023-02-28 06:01:54" itemprop="dateModified" datetime="2023-02-28T06:01:54+00:00">2023-02-28</time>
               </span>
 
           
@@ -399,7 +469,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-02-27 09:29:31" itemprop="dateModified" datetime="2023-02-27T09:29:31+00:00">2023-02-27</time>
+                <time title="Modified: 2023-02-28 06:01:54" itemprop="dateModified" datetime="2023-02-28T06:01:54+00:00">2023-02-28</time>
               </span>
 
           
@@ -480,7 +550,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-02-27 09:29:31" itemprop="dateModified" datetime="2023-02-27T09:29:31+00:00">2023-02-27</time>
+                <time title="Modified: 2023-02-28 06:01:54" itemprop="dateModified" datetime="2023-02-28T06:01:54+00:00">2023-02-28</time>
               </span>
 
           
@@ -580,7 +650,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-02-27 09:29:31" itemprop="dateModified" datetime="2023-02-27T09:29:31+00:00">2023-02-27</time>
+                <time title="Modified: 2023-02-28 06:01:54" itemprop="dateModified" datetime="2023-02-28T06:01:54+00:00">2023-02-28</time>
               </span>
 
           
@@ -655,7 +725,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-02-27 09:29:31" itemprop="dateModified" datetime="2023-02-27T09:29:31+00:00">2023-02-27</time>
+                <time title="Modified: 2023-02-28 06:01:54" itemprop="dateModified" datetime="2023-02-28T06:01:54+00:00">2023-02-28</time>
               </span>
 
           
@@ -733,7 +803,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-02-27 09:29:31" itemprop="dateModified" datetime="2023-02-27T09:29:31+00:00">2023-02-27</time>
+                <time title="Modified: 2023-02-28 06:01:54" itemprop="dateModified" datetime="2023-02-28T06:01:54+00:00">2023-02-28</time>
               </span>
 
           
@@ -841,7 +911,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
