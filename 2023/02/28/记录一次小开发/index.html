@@ -33,7 +33,7 @@
 <meta property="og:image" content="http://example.com/images/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%B0%8F%E5%BC%80%E5%8F%91/ans1.jpg">
 <meta property="og:image" content="http://example.com/images/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%B0%8F%E5%BC%80%E5%8F%91/ans2.jpg">
 <meta property="article:published_time" content="2023-02-28T12:23:11.000Z">
-<meta property="article:modified_time" content="2023-02-28T06:01:54.447Z">
+<meta property="article:modified_time" content="2023-03-09T08:15:22.321Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/images/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%B0%8F%E5%BC%80%E5%8F%91/problem.png">
@@ -178,10 +178,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-02-28 12:23:11 / Modified: 06:01:54" itemprop="dateCreated datePublished" datetime="2023-02-28T12:23:11+00:00">2023-02-28</time>
+              <time title="Created: 2023-02-28 12:23:11" itemprop="dateCreated datePublished" datetime="2023-02-28T12:23:11+00:00">2023-02-28</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-03-09 08:15:22" itemprop="dateModified" datetime="2023-03-09T08:15:22+00:00">2023-03-09</time>
+              </span>
 
           
 
@@ -194,8 +200,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>前几星期的晚上，有位朋友打电话问我一个问题。给定一个总价，和若干物品的单价。求出每个物品采购的数量，使得采购总和刚好等于给定的总价。<br>例如这样：<br><img src="/../images/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%B0%8F%E5%BC%80%E5%8F%91/problem.png"><br>他说：“他算了很久，都没有合适的结果。”我说：“电话不要挂断，我很快就帮你算出来。” 于是乎，我打开pycharm,几行python代码就算出来了合适的结果。(很快啊)<br><img src="/../images/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%B0%8F%E5%BC%80%E5%8F%91/ret.jpg"><br>他说：“计算机太牛了，比人的效率高太多了。这样的问题，我经常在工地上遇到，以后遇到了还找我算。”</p>
-<h2 id="开发需求"><a href="#开发需求" class="headerlink" title="开发需求"></a>开发需求</h2><p>   既然是经常遇到问题，那是不是应该开发一个合适的用户程序，让用户更加方便地使用起来呢。我总不能把我的代码直接丢给人家，让人家直接运行啊。代码的运行需要一个开发环境，总不能让人家配置一套python或者c++什么的开发环境吧。所以我们需要开发一个简单的GUI程序。<br>   总结一下当前比较火的GUI开发方向。移动端(主要设备是手机)，浏览器，PC桌面，小程序。其实我对浏览器的网页开发一直是非常刚兴趣的，因为跨平台，开源，有vue,react的开发框架。但是浏览器需要service,所以我放弃啦。ok那就移动端吧，但是我这位兄弟用的是苹果手机，我用的是小米手机。而且我也没有苹果电脑。所以我放弃啦。那就只能PC桌面啦，而且他身边也有电脑。<br><img src="/../images/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%B0%8F%E5%BC%80%E5%8F%91/%E9%9C%80%E6%B1%82%E8%B0%83%E6%9F%A5.jpg"></p>
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>前几星期的晚上，有位朋友打电话问我一个问题。给定一个总价，和若干物品的单价。求出每个物品采购的数量，使得采购总和刚好等于给定的总价。<br>例如这样：<br><img src="/../images/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%B0%8F%E5%BC%80%E5%8F%91/problem.png"><br>他说：“他算了很久，都没有合适的结果。”我说：“电话不要挂断，我很快就帮你算出来。” 于是乎，我打开pycharm,几行python代码就算出来了合适的结果。(很快啊)<br><img src="/../images/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%B0%8F%E5%BC%80%E5%8F%91/ret.jpg"><br>他说：“计算机太牛了，比人的效率高太多了。这样的问题，我经常在工地上遇到，以后遇到了还找你算。”</p>
+<h2 id="开发需求"><a href="#开发需求" class="headerlink" title="开发需求"></a>开发需求</h2><p>   既然是经常遇到问题，那是不是应该开发一个合适的用户程序，让用户更加方便地使用起来呢。我总不能把我的代码直接丢给人家，让人家直接运行啊。代码的运行需要一个开发环境，总不能让人家配置一套python或者c++什么的开发环境吧。所以我们需要开发一个简单的GUI程序。<br>   总结一下当前比较火的GUI开发方向。移动端(主要设备是手机)，浏览器，PC桌面，小程序。其实我对浏览器的网页开发一直是非常感兴趣的，因为跨平台，有vue,react等开发框架。但是浏览器需要service,所以我放弃啦。ok那就移动端吧，但是我这位兄弟用的是苹果手机，我用的是小米手机。而且我也没有苹果电脑。所以我放弃啦。那就只能PC桌面啦，而且他身边也有电脑。<br><img src="/../images/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%B0%8F%E5%BC%80%E5%8F%91/%E9%9C%80%E6%B1%82%E8%B0%83%E6%9F%A5.jpg"></p>
 <h2 id="开发"><a href="#开发" class="headerlink" title="开发"></a>开发</h2><p>其实GUI开发一直是我弱项，整天把自己的学习精力放在探索计算机里没有黑魔法的事情上了。但是也不影响，看看<a target="_blank" rel="noopener" href="https://www.pythonguis.com/pyqt6-tutorial/">文档</a>就可以快速上手了。<br>简单画了一个布局，添加几个组件。几个小时就可以搞定。<br>为了支持可以动态添加物品，所以还需要一个递归的算法。自从看了SICP，对递归的理解更深了。递归代码也可以轻松拿捏。写之后才发现这个问题和著名的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98">背包问题</a>非常类似。所以算法是很重要，很核心的。</p>
 <h3 id="打包命令"><a href="#打包命令" class="headerlink" title="打包命令"></a>打包命令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pyinstaller -F main.py</span><br></pre></td></tr></table></figure>
 <h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p><img src="/../images/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%B0%8F%E5%BC%80%E5%8F%91/ans1.jpg"><br><img src="/../images/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%B0%8F%E5%BC%80%E5%8F%91/ans2.jpg"><br>ok,能用。</p>
@@ -218,7 +224,10 @@
     <a href="/2023/02/27/ceph-rbd/" rel="prev" title="ceph-rbd">
       <i class="fa fa-chevron-left"></i> ceph-rbd
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2023/03/09/rocksdb%E7%AC%94%E8%AE%B0/" rel="next" title="rocksdb笔记">
+      rocksdb笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -291,7 +300,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
