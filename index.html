@@ -145,6 +145,92 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/04/%E7%81%AB%E7%84%B0%E5%9B%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/03/04/%E7%81%AB%E7%84%B0%E5%9B%BE/" class="post-title-link" itemprop="url">火焰图</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-03-04 15:12:03 / Modified: 08:30:01" itemprop="dateCreated datePublished" datetime="2024-03-04T15:12:03+00:00">2024-03-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">perf record -F 99 -p [pid] -g -- sleep 60</span><br><span class="line">perf script &gt; out.perf</span><br><span class="line">./stackcollapse-perf.pl out.perf &gt; out.folded</span><br><span class="line">./flamegraph.pl out.folded &gt; out.svg</span><br></pre></td></tr></table></figure>
+<p>命令的解释：</p>
+<ul>
+<li><p><code>perf record</code>: 启动<code>perf</code>的记录模式，用于收集性能数据。</p>
+</li>
+<li><p><code>-F 99</code>: 设置记录事件的采样频率。在这里，设置为99，表示每秒进行99次采样。采样频率的选择依赖于需要捕获的性能信息以及对性能开销的容忍度。</p>
+</li>
+<li><p><code>-p 13204</code>: 指定要监视的进程的PID（进程ID）。在这个例子中，监视的是PID为13204的进程。</p>
+</li>
+<li><p><code>-g</code>: 启用调用图跟踪，收集函数调用堆栈信息。这对于分析程序的性能瓶颈和理解函数之间的调用关系非常有用。</p>
+</li>
+<li><p><code>--</code>: 表示后面的参数是要执行的命令。在这里，是<code>sleep 30</code>，即使<code>perf</code>工具在后台运行，记录了30秒的性能数据。</p>
+</li>
+<li><p><code>perf script &gt; out.perf</code>: 将收集到的数据转换为可读的文本格式。</p>
+</li>
+<li><p><code>./stackcollapse-perf.pl out.perf &gt; out.folded</code>: 生成stack。</p>
+</li>
+<li><p><code>./flamegraph.pl out.folded &gt; out.svg</code>: 生成火焰图</p>
+</li>
+</ul>
+<h1 id="perf-做了什么事"><a href="#perf-做了什么事" class="headerlink" title="perf 做了什么事"></a>perf 做了什么事</h1><p>可以简单的理解perf是一个采样工具，对CPU正在执行的函数，以及当前的函数堆栈(stack), 进行采样。<br>perf是怎么做这件事的呢？ 我猜测是通过读取<code>/proc/[pid]</code>下的内容，进行统计，监控。  </p>
+<p><code>FlameGraph</code>是解释型语言<code>Perl</code>写的。所以无需安装，只需要下载<a target="_blank" rel="noopener" href="https://github.com/brendangregg/FlameGraph">源代码</a>，就可以执行。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li>[1] <a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2017/09/flame-graph.html">如何读懂火焰图？</a></li>
+<li>[2] <a target="_blank" rel="noopener" href="https://queue.acm.org/detail.cfm?id=2927301">火焰图的介绍论文</a></li>
+<li>[3] <a target="_blank" rel="noopener" href="https://www.brendangregg.com/flamegraphs.html">火焰图官方主页</a></li>
+<li>[4] <a target="_blank" rel="noopener" href="https://github.com/brendangregg/FlameGraph">代码</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/01/01/2023%E5%B9%B4%E7%BB%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -176,7 +262,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-28 13:10:48" itemprop="dateModified" datetime="2024-02-28T13:10:48+00:00">2024-02-28</time>
+                <time title="Modified: 2024-03-04 08:30:01" itemprop="dateModified" datetime="2024-03-04T08:30:01+00:00">2024-03-04</time>
               </span>
 
           
@@ -253,7 +339,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-28 13:10:48" itemprop="dateModified" datetime="2024-02-28T13:10:48+00:00">2024-02-28</time>
+                <time title="Modified: 2024-03-04 08:30:01" itemprop="dateModified" datetime="2024-03-04T08:30:01+00:00">2024-03-04</time>
               </span>
 
           
@@ -339,7 +425,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-28 13:10:48" itemprop="dateModified" datetime="2024-02-28T13:10:48+00:00">2024-02-28</time>
+                <time title="Modified: 2024-03-04 08:30:01" itemprop="dateModified" datetime="2024-03-04T08:30:01+00:00">2024-03-04</time>
               </span>
 
           
@@ -409,7 +495,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-28 13:10:48" itemprop="dateModified" datetime="2024-02-28T13:10:48+00:00">2024-02-28</time>
+                <time title="Modified: 2024-03-04 08:30:01" itemprop="dateModified" datetime="2024-03-04T08:30:01+00:00">2024-03-04</time>
               </span>
 
           
@@ -502,7 +588,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-28 13:10:48" itemprop="dateModified" datetime="2024-02-28T13:10:48+00:00">2024-02-28</time>
+                <time title="Modified: 2024-03-04 08:30:01" itemprop="dateModified" datetime="2024-03-04T08:30:01+00:00">2024-03-04</time>
               </span>
 
           
@@ -570,7 +656,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-28 13:10:48" itemprop="dateModified" datetime="2024-02-28T13:10:48+00:00">2024-02-28</time>
+                <time title="Modified: 2024-03-04 08:30:01" itemprop="dateModified" datetime="2024-03-04T08:30:01+00:00">2024-03-04</time>
               </span>
 
           
@@ -638,7 +724,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-28 13:10:48" itemprop="dateModified" datetime="2024-02-28T13:10:48+00:00">2024-02-28</time>
+                <time title="Modified: 2024-03-04 08:30:01" itemprop="dateModified" datetime="2024-03-04T08:30:01+00:00">2024-03-04</time>
               </span>
 
           
@@ -719,7 +805,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-28 13:10:48" itemprop="dateModified" datetime="2024-02-28T13:10:48+00:00">2024-02-28</time>
+                <time title="Modified: 2024-03-04 08:30:01" itemprop="dateModified" datetime="2024-03-04T08:30:01+00:00">2024-03-04</time>
               </span>
 
           
@@ -819,7 +905,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-28 13:10:48" itemprop="dateModified" datetime="2024-02-28T13:10:48+00:00">2024-02-28</time>
+                <time title="Modified: 2024-03-04 08:30:01" itemprop="dateModified" datetime="2024-03-04T08:30:01+00:00">2024-03-04</time>
               </span>
 
           
@@ -845,84 +931,6 @@
 <li>怎么处理请求<br>我看好多都是用一个结构体封装每次的请求参数信息。好吧，这方面的知识一无所知,有待加强。</li>
 </ol>
 <h3 id="其实就是想强迫自己写一下博客。"><a href="#其实就是想强迫自己写一下博客。" class="headerlink" title="其实就是想强迫自己写一下博客。"></a>其实就是想强迫自己写一下博客。</h3>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/07/%E5%8D%9A%E5%AE%A2%E5%88%9D%E4%BD%93%E9%AA%8C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/10/07/%E5%8D%9A%E5%AE%A2%E5%88%9D%E4%BD%93%E9%AA%8C/" class="post-title-link" itemprop="url">博客初体验</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-10-07 00:23:37" itemprop="dateCreated datePublished" datetime="2022-10-07T00:23:37+00:00">2022-10-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-02-28 13:10:48" itemprop="dateModified" datetime="2024-02-28T13:10:48+00:00">2024-02-28</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="恭喜啊"><a href="#恭喜啊" class="headerlink" title="恭喜啊"></a>恭喜啊</h1><p>写博客一直是我心心念的事情。虽然大学的时候有在CSDN写过一点博客，但是作为程序员的高傲，肯定是想自己搞一个网站搭建博客。<br>几经波折我最终选择了hexo+GitHub。  </p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ol>
-<li>基本的前端常识，了解JavaScript, html, css等。</li>
-<li>基本MarkDown文档的编写。</li>
-<li>阅读文档的耐心。</li>
-</ol>
-<h1 id="需要理解的概念"><a href="#需要理解的概念" class="headerlink" title="需要理解的概念"></a>需要理解的概念</h1><ol>
-<li>非常建议大家阅读最新的英文文档，因为英文文档的部署方法用的是<a target="_blank" rel="noopener" href="https://docs.github.com/en/actions">GitHub Actions</a>.中文版本的部署方法是<a target="_blank" rel="noopener" href="https://www.travis-ci.com/">travis-ci</a>（自我感觉使用travis-ci部署会麻烦点）。</li>
-</ol>
-<p>其实<strong>GitHub Actions</strong>和<strong>travis-ci</strong>都是属于<a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2015/09/continuous-integration.html">持续集成</a>（Continuous integration，简称CI）服务。网上了查了一下有很多的专业术语去描述这件事情。具体到我们搭建博客的过程就是：hexo只是我们用来写博客的（注意这里的博客是Markdown的文件格式），但是要想作为浏览器浏览的网页，那就必须通过一些系列操作，然后生成我们想要的html文件(运行命令<code>hexo generate</code>)。那么这一系列操作便可以理解是持续集成服务的一部分。</p>
-<h1 id="遇到的困难"><a href="#遇到的困难" class="headerlink" title="遇到的困难"></a>遇到的困难</h1><ol>
-<li>在阅读文档的时候，对于gh-pages当时没有理解。其实就是通过github actions会把生成的html文件copy到gh-pages分支，我们可以把该分支的内容作为github pages.  </li>
-<li>我的主题是通过<a target="_blank" rel="noopener" href="https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-%E5%AD%90%E6%A8%A1%E5%9D%97">github submodule</a>的方式添加的。这就导致拉代码的时候，是要拉取子模块的代码。<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">--- a/.github/workflows/pages.yml</span><br><span class="line">+++ b/.github/workflows/pages.yml</span><br><span class="line">@@ -11,7 +11,7 @@ jobs:</span><br><span class="line">     steps:</span><br><span class="line">       - uses: actions/checkout@v2</span><br><span class="line">         with:</span><br><span class="line">-          submodules: true</span><br><span class="line">+          submodules: &#x27;true&#x27;</span><br><span class="line">       - name: Use Node.js 16.x</span><br><span class="line">         uses: actions/setup-node@v2</span><br><span class="line">         with:</span><br></pre></td></tr></table></figure></li>
-</ol>
-
       
     </div>
 
@@ -1006,7 +1014,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
