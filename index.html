@@ -145,6 +145,76 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/06/%E7%BC%96%E8%AF%91gcc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/03/06/%E7%BC%96%E8%AF%91gcc/" class="post-title-link" itemprop="url">编译gcc</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-03-06 16:21:39 / Modified: 09:02:14" itemprop="dateCreated datePublished" datetime="2024-03-06T16:21:39+00:00">2024-03-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="下载代码"><a href="#下载代码" class="headerlink" title="下载代码"></a>下载代码</h1><p><a target="_blank" rel="noopener" href="https://ftp.gnu.org/gnu/gcc/">code</a>。关于版本，我这里参考的是<a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/17">cppreference</a>, 例如：通过阅读文档，可以知道：完全支持cpp17, 至少需要 <a target="_blank" rel="noopener" href="https://ftp.gnu.org/gnu/gcc/gcc-7.5.0/"><code>gcc-7.0</code></a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://ftp.gnu.org/gnu/gcc/gcc-13.2.0/gcc-13.2.0.tar.gz</span><br><span class="line">tar -xzf gcc-13.2.0.tar.gz</span><br><span class="line">cd gcc-13.2.0</span><br></pre></td></tr></table></figure>
+<h1 id="编译和安装"><a href="#编译和安装" class="headerlink" title="编译和安装"></a>编译和安装</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line">../configure --prefix=/usr/local/gcc-13.2.0/build --enable-languages=c,c++ --disable-multilib</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>--prefix=[PATH]</code>: 这个参数非常重要，确定了gcc的安装路径。就是执行<code>make install</code>后，gcc的安装路径。</li>
+<li>当执行完<code>make install</code>后，才会生成完整的gcc。</li>
+</ul>
+<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><ul>
+<li>环境变量<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export CC=/usr/local/gcc-13.2.0/build/bin/gcc</span><br><span class="line">export CXX=/usr/local/gcc-13.2.0/build/bin/g++</span><br></pre></td></tr></table></figure></li>
+<li>写入CMake<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>(CMAKE_C_COMPILER /usr/local/gcc-<span class="number">13.2</span>.<span class="number">0</span>/build/bin/gcc)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_COMPILER /usr/local/gcc-<span class="number">13.2</span>.<span class="number">0</span>/build/bin/g++)</span><br></pre></td></tr></table></figure>
+参考<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/17275348/how-to-specify-new-gcc-path-for-cmake">how-to-specify-new-gcc-path-for-cmake</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/04/%E7%81%AB%E7%84%B0%E5%9B%BE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -168,10 +238,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2024-03-04 15:12:03 / Modified: 08:30:01" itemprop="dateCreated datePublished" datetime="2024-03-04T15:12:03+00:00">2024-03-04</time>
+              <time title="Created: 2024-03-04 15:12:03" itemprop="dateCreated datePublished" datetime="2024-03-04T15:12:03+00:00">2024-03-04</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-03-06 09:02:14" itemprop="dateModified" datetime="2024-03-06T09:02:14+00:00">2024-03-06</time>
+              </span>
 
           
 
@@ -262,7 +338,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-03-04 08:30:01" itemprop="dateModified" datetime="2024-03-04T08:30:01+00:00">2024-03-04</time>
+                <time title="Modified: 2024-03-06 09:02:14" itemprop="dateModified" datetime="2024-03-06T09:02:14+00:00">2024-03-06</time>
               </span>
 
           
@@ -339,7 +415,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-03-04 08:30:01" itemprop="dateModified" datetime="2024-03-04T08:30:01+00:00">2024-03-04</time>
+                <time title="Modified: 2024-03-06 09:02:14" itemprop="dateModified" datetime="2024-03-06T09:02:14+00:00">2024-03-06</time>
               </span>
 
           
@@ -425,7 +501,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-03-04 08:30:01" itemprop="dateModified" datetime="2024-03-04T08:30:01+00:00">2024-03-04</time>
+                <time title="Modified: 2024-03-06 09:02:14" itemprop="dateModified" datetime="2024-03-06T09:02:14+00:00">2024-03-06</time>
               </span>
 
           
@@ -495,7 +571,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-03-04 08:30:01" itemprop="dateModified" datetime="2024-03-04T08:30:01+00:00">2024-03-04</time>
+                <time title="Modified: 2024-03-06 09:02:14" itemprop="dateModified" datetime="2024-03-06T09:02:14+00:00">2024-03-06</time>
               </span>
 
           
@@ -588,7 +664,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-03-04 08:30:01" itemprop="dateModified" datetime="2024-03-04T08:30:01+00:00">2024-03-04</time>
+                <time title="Modified: 2024-03-06 09:02:14" itemprop="dateModified" datetime="2024-03-06T09:02:14+00:00">2024-03-06</time>
               </span>
 
           
@@ -656,7 +732,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-03-04 08:30:01" itemprop="dateModified" datetime="2024-03-04T08:30:01+00:00">2024-03-04</time>
+                <time title="Modified: 2024-03-06 09:02:14" itemprop="dateModified" datetime="2024-03-06T09:02:14+00:00">2024-03-06</time>
               </span>
 
           
@@ -724,7 +800,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-03-04 08:30:01" itemprop="dateModified" datetime="2024-03-04T08:30:01+00:00">2024-03-04</time>
+                <time title="Modified: 2024-03-06 09:02:14" itemprop="dateModified" datetime="2024-03-06T09:02:14+00:00">2024-03-06</time>
               </span>
 
           
@@ -805,7 +881,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-03-04 08:30:01" itemprop="dateModified" datetime="2024-03-04T08:30:01+00:00">2024-03-04</time>
+                <time title="Modified: 2024-03-06 09:02:14" itemprop="dateModified" datetime="2024-03-06T09:02:14+00:00">2024-03-06</time>
               </span>
 
           
@@ -856,81 +932,6 @@
 <hr>
 <hr>
 
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/30/10%E6%9C%88%E7%9A%84%E5%B0%BE%E5%B7%B4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/10/30/10%E6%9C%88%E7%9A%84%E5%B0%BE%E5%B7%B4/" class="post-title-link" itemprop="url">10月的尾巴</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-10-30 23:57:13" itemprop="dateCreated datePublished" datetime="2022-10-30T23:57:13+00:00">2022-10-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-03-04 08:30:01" itemprop="dateModified" datetime="2024-03-04T08:30:01+00:00">2024-03-04</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="复盘"><a href="#复盘" class="headerlink" title="复盘"></a>复盘</h1><p>10月过的好快啊。国庆七天，隔离七天。半个月就过去了。</p>
-<h2 id="工作"><a href="#工作" class="headerlink" title="工作"></a>工作</h2><ol>
-<li>调试samba.<br> 其实一个很小的权限问题，我当时是很快定位到不是radosgw的问题，因为radosgw已经把错误信息抛给了samba.</li>
-<li>调试radosgw.<br> 自己对radosgw的代码也是越来越熟悉了。但是写抽象程度比较高的代码，我还是很不舒服的。有的时候写了好长时间都不知道自己写了啥。</li>
-<li>学习rust.<br><a target="_blank" rel="noopener" href="https://lab.cs.tsinghua.edu.cn/rust/">课程</a>. 人家大二的课程。怎么说呢? 自我感觉没有python方便的。仿佛是cpp的加强版，rust站在了cpp的肩膀上，用一些更好的方法去处理优化cpp的缺点。</li>
-<li>vue和react.<br>三分钟热度，希望能继续坚持…</li>
-</ol>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
-<li>怎么用curl做http请求。<br>curl不只是一个命令行程序，它也可以编译链接到其他程序中。例如radosgw中就封装了curl的一些方法，用来做http的请求(GET, POST, PUT…)</li>
-<li>怎么处理请求<br>我看好多都是用一个结构体封装每次的请求参数信息。好吧，这方面的知识一无所知,有待加强。</li>
-</ol>
-<h3 id="其实就是想强迫自己写一下博客。"><a href="#其实就是想强迫自己写一下博客。" class="headerlink" title="其实就是想强迫自己写一下博客。"></a>其实就是想强迫自己写一下博客。</h3>
       
     </div>
 
@@ -1014,7 +1015,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
