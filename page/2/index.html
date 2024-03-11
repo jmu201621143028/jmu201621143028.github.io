@@ -145,6 +145,106 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/06/%E5%91%A8%E8%AE%B0-11%E6%9C%886%E5%8F%B7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/11/06/%E5%91%A8%E8%AE%B0-11%E6%9C%886%E5%8F%B7/" class="post-title-link" itemprop="url">周记 11月6号</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-11-06 23:00:44" itemprop="dateCreated datePublished" datetime="2022-11-06T23:00:44+00:00">2022-11-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-03-11 02:51:27" itemprop="dateModified" datetime="2024-03-11T02:51:27+00:00">2024-03-11</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="工作"><a href="#工作" class="headerlink" title="工作"></a>工作</h1><p>经过几番调试终于对radosgw部分的代码框架有了大致的了解，当然工作任务是顺利完成了。细细想来有下面的总结。</p>
+<ol>
+<li><p>radosgw通过下面的代码，针对http不同请求(GET, POST, PUT, HEAD…)创建不同的对象，处理不同的业务需求。值得注意的是RSET(Representational state transfer)是一个表现层的协议。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">RGWOp* <span class="title">RGWHandler_REST::get_op</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  RGWOp *op;</span><br><span class="line">  <span class="keyword">switch</span> (s-&gt;op) &#123;</span><br><span class="line">   <span class="keyword">case</span> OP_GET:</span><br><span class="line">     op = <span class="built_in">op_get</span>();</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">   <span class="keyword">case</span> OP_PUT:</span><br><span class="line">     op = <span class="built_in">op_put</span>();</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">   <span class="keyword">case</span> OP_DELETE:</span><br><span class="line">     op = <span class="built_in">op_delete</span>();</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">   <span class="keyword">case</span> OP_HEAD:</span><br><span class="line">     op = <span class="built_in">op_head</span>();</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">   <span class="keyword">case</span> OP_POST:</span><br><span class="line">     op = <span class="built_in">op_post</span>();</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">   <span class="keyword">case</span> OP_COPY:</span><br><span class="line">     op = <span class="built_in">op_copy</span>();</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">   <span class="keyword">case</span> OP_OPTIONS:</span><br><span class="line">     op = <span class="built_in">op_options</span>();</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">   <span class="keyword">default</span>:</span><br><span class="line">     <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (op) &#123;</span><br><span class="line">    op-&gt;<span class="built_in">init</span>(store, s, <span class="keyword">this</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> op;</span><br><span class="line">&#125; <span class="comment">/* get_op */</span></span><br></pre></td></tr></table></figure></li>
+<li><p>封装<a target="_blank" rel="noopener" href="https://curl.se/libcurl/">libcurl</a>, 实现httpclient<br>代码<code>src\rgw\rgw_http_client.cc</code>, 需要细细品。</p>
+</li>
+<li><p>读日志vs动态调试<br>不得不说当你对代码熟悉的时候，读日志比动态调试代码高效很多。我可以清晰地看到来自<a target="_blank" rel="noopener" href="http://civetweb.github.io/civetweb/">civetweb</a>的报文信息，以及radosgw的各种处理。</p>
+</li>
+<li><p>valgrind<br><a target="_blank" rel="noopener" href="https://valgrind.org/">valgrind</a>只是简单的用了下。</p>
+</li>
+</ol>
+<h1 id="生活"><a href="#生活" class="headerlink" title="生活"></a>生活</h1><ol>
+<li>leetcode<br>今天下午刷了好几道<a target="_blank" rel="noopener" href="https://leetcode.cn/tag/sliding-window/problemset/">滑动窗口</a>的题。参考了<a target="_blank" rel="noopener" href="https://space.bilibili.com/206214">灵神</a>给的模板。</li>
+</ol>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/repeated-dna-sequences/">187.重复的DNA序列</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">findRepeatedDnaSequences</span>(<span class="params">self, s: <span class="built_in">str</span></span>) -&gt; <span class="type">List</span>[<span class="built_in">str</span>]:</span><br><span class="line">        <span class="comment"># 滑动窗口</span></span><br><span class="line">        <span class="comment"># 先将k-1的数据放入窗口(这里k=10)</span></span><br><span class="line">        k = <span class="number">10</span></span><br><span class="line">        record = [c <span class="keyword">for</span> c <span class="keyword">in</span> s[:k-<span class="number">1</span>]]</span><br><span class="line">        R = <span class="built_in">dict</span>()</span><br><span class="line">        <span class="keyword">for</span> in_ <span class="keyword">in</span> s[k-<span class="number">1</span>:]:</span><br><span class="line">            record.append(in_)</span><br><span class="line">            dk = <span class="string">&#x27;&#x27;</span>.join(record)</span><br><span class="line">            R[dk] = R.get(dk, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">            record.pop(<span class="number">0</span>)</span><br><span class="line">        ans = []</span><br><span class="line">        <span class="keyword">for</span> k, v <span class="keyword">in</span> R.items():</span><br><span class="line">            <span class="keyword">if</span> v != <span class="number">1</span>:</span><br><span class="line">                ans.append(k)</span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/contains-duplicate-ii/">219.存在重复元素 II</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">containsNearbyDuplicate</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>], k: <span class="built_in">int</span></span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        <span class="comment"># 滑动窗口</span></span><br><span class="line">        <span class="comment"># 先将k-1个元素，加入窗口</span></span><br><span class="line">        k += <span class="number">1</span></span><br><span class="line">        record = <span class="built_in">dict</span>()</span><br><span class="line">        <span class="keyword">for</span> n <span class="keyword">in</span> nums[:k-<span class="number">1</span>]:</span><br><span class="line">            record[n] = record.get(n, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> record[n] != <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">for</span> in_, out <span class="keyword">in</span> <span class="built_in">zip</span>(nums[k-<span class="number">1</span>:], nums):</span><br><span class="line">            record[in_] = record.get(in_, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> record[in_] != <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">            record[out] -= <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> record[out] == <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">del</span> record[out]</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure></li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/contains-duplicate-iii/">220.存在重复元素 III</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> bisect</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">containsNearbyAlmostDuplicate</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>], k: <span class="built_in">int</span>, t: <span class="built_in">int</span></span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        <span class="comment"># 滑动窗口</span></span><br><span class="line">        <span class="comment"># 初始化先将k-1个元素放入窗口内</span></span><br><span class="line">        <span class="comment"># 二分插入</span></span><br><span class="line">        k += <span class="number">1</span></span><br><span class="line">        record = <span class="built_in">sorted</span>([n <span class="keyword">for</span> n <span class="keyword">in</span> nums[:k-<span class="number">1</span>]])</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(record) - <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> record[i+<span class="number">1</span>] - record[i] &lt;= t:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">for</span> in_, out <span class="keyword">in</span> <span class="built_in">zip</span>(nums[k-<span class="number">1</span>:], nums):</span><br><span class="line">            ix = bisect.bisect(record, in_)</span><br><span class="line">            record.insert(ix, in_)</span><br><span class="line">            <span class="keyword">if</span> (ix - <span class="number">1</span> &gt;= <span class="number">0</span> <span class="keyword">and</span> record[ix] - record[ix-<span class="number">1</span>] &lt;= t) <span class="keyword">or</span> (ix + <span class="number">1</span> &lt; <span class="built_in">len</span>(record) <span class="keyword">and</span> record[ix + <span class="number">1</span>] - record[ix] &lt;= t):</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">            <span class="keyword">del</span> record[bisect.bisect(record, out)-<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure></li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/sliding-window-maximum/">239.滑动窗口最大值</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> bisect</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">dep</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        self.sk = []</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">insert</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="keyword">while</span> self.sk <span class="keyword">and</span> self.sk[-<span class="number">1</span>] &lt; x:</span><br><span class="line">            self.sk.pop()</span><br><span class="line">        self.sk.append(x)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">first</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> self.sk[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">popfirst</span>(<span class="params">self</span>):</span><br><span class="line">        self.sk.pop(<span class="number">0</span>)</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">maxSlidingWindow</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>], k: <span class="built_in">int</span></span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span><br><span class="line">        <span class="comment"># 单调队列</span></span><br><span class="line">        <span class="comment"># 先将k-1个元素放入窗口内</span></span><br><span class="line">        record = dep()</span><br><span class="line">        <span class="keyword">for</span> n <span class="keyword">in</span> nums[:k-<span class="number">1</span>]:</span><br><span class="line">            record.insert(n)</span><br><span class="line">        ans = []</span><br><span class="line">        <span class="keyword">for</span> in_, out <span class="keyword">in</span> <span class="built_in">zip</span>(nums[k-<span class="number">1</span>:], nums):</span><br><span class="line">            record.insert(in_)</span><br><span class="line">            f = record.first()</span><br><span class="line">            ans.append(f)</span><br><span class="line">            <span class="keyword">if</span> f == out:</span><br><span class="line">                record.popfirst()</span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+<p>ps 评论区有意思的东西  </p>
+</li>
+<li><p>单调队列真是一种让人感到五味杂陈的数据结构，它的维护过程更是如此…..就拿此题来说，队头最大，往队尾方向单调……有机会站在队头的老大永远心狠手辣，当它从队尾杀进去的时候，如果它发现这里面没一个够自己打的，它会毫无人性地屠城，把原先队里的人头全部丢出去，转身建立起自己的政权，野心勃勃地准备开创一个新的王朝…..这时候，它的人格竟发生了一百八十度大反转，它变成了一位胸怀宽广的慈父！它热情地请那些新来的“小个子”们入住自己的王国……然而，这些小个子似乎天性都是一样的——嫉妒心强，倘若见到比自己还小的居然更早入住王国，它们会心狠手辣地找一个夜晚把它们通通干掉，好让自己享受更大的“蛋糕”；当然，遇到比自己强大的，它们也没辙，乖乖夹起尾巴做人。像这样的暗杀事件每天都在上演，虽然王国里日益笼罩上白色恐怖，但是好在没有后来者强大到足以干翻国王，江山还算能稳住。直到有一天，闯进来了一位真正厉害的角色，就像当年打江山的国王一样，手段狠辣，野心膨胀，于是又是大屠城……历史总是轮回的。  </p>
+</li>
+<li><p>觉得现代官场更加能阐明这个基本道理。比如你这个倒霉蛋25岁二本毕业在机关当科员， 熬了十年后老处长退休， 你们科长升处长， 你升科长。你梦想着再熬10年处长退休·你接班。结果是赵家人不讲武德。直接空降一个25岁的付处。他比你先接班，你等他退休也没戏， 所以这一辈子和处长没关系，自然可以从queue里pop out， 不用排队。</p>
+</li>
+</ul>
+<ol start="2">
+<li>读书:《政治的人生》<br>细细想来我已经好久没有读过这样的书了。我不敢相信这是1994年写的书，因为我感觉作者的思考的问题，表达的事情在2022年并不过时。<br><img src="/../images/%E5%91%A8%E8%AE%B0_11_6/%E6%94%BF%E6%B2%BB%E7%9A%84%E4%BA%BA%E7%94%9F_1.jpg"><br><img src="/../images/%E5%91%A8%E8%AE%B0_11_6/%E6%94%BF%E6%B2%BB%E7%9A%84%E4%BA%BA%E7%94%9F_2.jpg"><br><img src="/../images/%E5%91%A8%E8%AE%B0_11_6/%E6%94%BF%E6%B2%BB%E7%9A%84%E4%BA%BA%E7%94%9F_3.jpg"><br><img src="/../images/%E5%91%A8%E8%AE%B0_11_6/%E6%94%BF%E6%B2%BB%E7%9A%84%E4%BA%BA%E7%94%9F_4.jpg"><br><img src="/../images/%E5%91%A8%E8%AE%B0_11_6/%E6%94%BF%E6%B2%BB%E7%9A%84%E4%BA%BA%E7%94%9F_5.jpg"><br><img src="/../images/%E5%91%A8%E8%AE%B0_11_6/%E6%94%BF%E6%B2%BB%E7%9A%84%E4%BA%BA%E7%94%9F_6.jpg"></li>
+</ol>
+<hr>
+<hr>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/30/10%E6%9C%88%E7%9A%84%E5%B0%BE%E5%B7%B4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -176,7 +276,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-03-06 09:07:56" itemprop="dateModified" datetime="2024-03-06T09:07:56+00:00">2024-03-06</time>
+                <time title="Modified: 2024-03-11 02:51:27" itemprop="dateModified" datetime="2024-03-11T02:51:27+00:00">2024-03-11</time>
               </span>
 
           
@@ -251,7 +351,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-03-06 09:07:56" itemprop="dateModified" datetime="2024-03-06T09:07:56+00:00">2024-03-06</time>
+                <time title="Modified: 2024-03-11 02:51:27" itemprop="dateModified" datetime="2024-03-11T02:51:27+00:00">2024-03-11</time>
               </span>
 
           
@@ -329,7 +429,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-03-06 09:07:56" itemprop="dateModified" datetime="2024-03-06T09:07:56+00:00">2024-03-06</time>
+                <time title="Modified: 2024-03-11 02:51:27" itemprop="dateModified" datetime="2024-03-11T02:51:27+00:00">2024-03-11</time>
               </span>
 
           
@@ -440,7 +540,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
