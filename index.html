@@ -145,6 +145,87 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/13/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/03/13/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/" class="post-title-link" itemprop="url">性能测试</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-03-13 15:28:39 / Modified: 09:25:18" itemprop="dateCreated datePublished" datetime="2024-03-13T15:28:39+00:00">2024-03-13</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="性能测试的重要性"><a href="#性能测试的重要性" class="headerlink" title="性能测试的重要性"></a>性能测试的重要性</h1><p>因为最近用到的性能测试工具比较多，例如<a target="_blank" rel="noopener" href="https://github.com/axboe/fio"><strong>fio</strong></a>, <a target="_blank" rel="noopener" href="https://github.com/wg/wrk"><strong>wrk</strong></a>。所以难免有一些感慨。<br>计算机是一个严格的科学工具，里边没有黑魔法，里边所有的东西都是可以测量的。什么是科学？科学具有可证伪性，可检验性。有个有趣的段子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">你要是推翻西医里的理论，那是可以拿诺奖的。</span><br><span class="line">你要是推翻中医里的理论。那后果...</span><br></pre></td></tr></table></figure>
+<p>回忆之前在课本里学到了很多概念，例如时间复杂度分析，学的时候觉得很枯燥，彷佛用不上。平时自己写的小程序，在自己的个人电脑上也都是瞬间执行结束的。根本体会不到时间复杂度的重要性。直到我在leetcode上遇到1G的数据量时，我才真正的体会到了时间复杂度的重要。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>log(<span class="number">10</span>**<span class="number">9</span>,<span class="number">2</span>)</span><br><span class="line"><span class="number">29.897352853986263</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">10</span>**<span class="number">9</span> / log(<span class="number">10</span>**<span class="number">9</span>,<span class="number">2</span>)</span><br><span class="line"><span class="number">33447777.29599791</span></span><br></pre></td></tr></table></figure>
+<p>不知道，你有没有对这个计算结果吃惊呢？<br>有的时候我就在想：是计算机太快了，绝大多数普通人是感受不到毫秒级的延迟的。当然更重要的是好多人也不会遇到这样的问题，毕竟能有百万并发的场景是少数大厂。既然遇不到这样的问题，那么所有的知识，就会变得枯燥。<br><strong>Latency Numbers Every Programmer Should Know</strong><br><img src="/../images/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/access_time.png"></p>
+<p><strong>anyway</strong>所有的东西都是可以测试的，可以通过数学去计算，度量的。去分析瓶颈在哪里，看<strong>Htop</strong>, <strong>火焰图</strong>，<strong>iostat</strong>,最后分析讨论该怎么优化。<br>记得用成熟的工具去测试，否则盲目的人肉测试是不科学的。</p>
+<h1 id="Http性能测试"><a href="#Http性能测试" class="headerlink" title="Http性能测试"></a>Http性能测试</h1><p>无意中发现了一个非常simple的<a target="_blank" rel="noopener" href="https://github.com/trungams/http-server">http-server</a>, 还是那句话，http的本质是确定格式的文本读写。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wrk -t12 -c400 -d30s http://127.0.0.1:7890</span><br></pre></td></tr></table></figure>
+<p>结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Running 30s test @ http://127.0.0.1:7890</span><br><span class="line">  12 threads and 400 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency   800.64us    3.95ms 202.80ms   99.83%</span><br><span class="line">    Req/Sec    47.56k     5.41k   98.40k    89.10%</span><br><span class="line">  17068381 requests in 30.10s, 1.24GB read</span><br><span class="line">Requests/sec: 567065.38</span><br><span class="line">Transfer/sec:     42.18MB</span><br></pre></td></tr></table></figure>
+<p>Htop<br><img src="/../images/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/Htop.png"></p>
+<p>对比一下之前的常用的<a target="_blank" rel="noopener" href="https://github.com/pallets/flask"><strong>Flask</strong></a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(venv) [root@node1 demo-flask]# python demo.py</span><br><span class="line"> * Serving Flask app &#x27;demo&#x27; (lazy loading)</span><br><span class="line"> * Environment: production</span><br><span class="line">   WARNING: This is a development server. Do not use it in a production deployment.</span><br><span class="line">   Use a production WSGI server instead.</span><br><span class="line"> * Debug mode: off</span><br><span class="line"> * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 wrk]# ./wrk -t12 -c400 -d30s http://127.0.0.1:5000</span><br><span class="line">Running 30s test @ http://127.0.0.1:5000</span><br><span class="line">  12 threads and 400 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency   284.32ms  178.98ms   1.96s    81.05%</span><br><span class="line">    Req/Sec    71.11     42.46   292.00     73.87%</span><br><span class="line">  24828 requests in 30.03s, 3.93MB read</span><br><span class="line">  Socket errors: connect 0, read 0, write 0, timeout 131</span><br><span class="line">Requests/sec:    826.80</span><br><span class="line">Transfer/sec:    134.03KB</span><br></pre></td></tr></table></figure>
+
+<p>加上WSGI</p>
+<ul>
+<li>四进程<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(venv) [root@node1 demo-flask]# gunicorn -w 4 -k gevent demo:app -b :7889</span><br><span class="line">[2024-03-13 08:49:25 +0000] [220624] [INFO] Starting gunicorn 21.2.0</span><br><span class="line">[2024-03-13 08:49:25 +0000] [220624] [INFO] Listening at: http://0.0.0.0:7889 (220624)</span><br><span class="line">[2024-03-13 08:49:25 +0000] [220624] [INFO] Using worker: gevent</span><br><span class="line">[2024-03-13 08:49:25 +0000] [220627] [INFO] Booting worker with pid: 220627</span><br><span class="line">[2024-03-13 08:49:25 +0000] [220628] [INFO] Booting worker with pid: 220628</span><br><span class="line">[2024-03-13 08:49:25 +0000] [220629] [INFO] Booting worker with pid: 220629</span><br><span class="line">[2024-03-13 08:49:26 +0000] [220630] [INFO] Booting worker with pid: 220630</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 wrk]# ./wrk -t12 -c400 -d30s http://127.0.0.1:7889</span><br><span class="line">Running 30s test @ http://127.0.0.1:7889</span><br><span class="line">  12 threads and 400 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency    24.68ms  147.52ms   2.00s    96.66%</span><br><span class="line">    Req/Sec     3.44k     3.16k   11.86k    53.42%</span><br><span class="line">  353945 requests in 30.04s, 57.72MB read</span><br><span class="line">  Socket errors: connect 0, read 0, write 0, timeout 502</span><br><span class="line">Requests/sec:  11782.63</span><br><span class="line">Transfer/sec:      1.92MB</span><br></pre></td></tr></table></figure></li>
+<li>八进程<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 wrk]# ./wrk -t12 -c400 -d30s http://127.0.0.1:7889</span><br><span class="line">Running 30s test @ http://127.0.0.1:7889</span><br><span class="line">  12 threads and 400 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency    13.29ms  107.98ms   2.00s    98.02%</span><br><span class="line">    Req/Sec     4.49k     2.79k   17.94k    71.28%</span><br><span class="line">  709308 requests in 30.04s, 115.67MB read</span><br><span class="line">  Socket errors: connect 0, read 11, write 0, timeout 445</span><br><span class="line">Requests/sec:  23612.98</span><br><span class="line">Transfer/sec:      3.85MB</span><br></pre></td></tr></table></figure></li>
+<li>十六进程<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 wrk]# ./wrk -t12 -c400 -d30s http://127.0.0.1:7889</span><br><span class="line">Running 30s test @ http://127.0.0.1:7889</span><br><span class="line">  12 threads and 400 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency    86.79ms  283.99ms   2.00s    91.56%</span><br><span class="line">    Req/Sec     4.73k     3.01k   28.13k    67.26%</span><br><span class="line">  1318602 requests in 30.10s, 215.04MB read</span><br><span class="line">  Socket errors: connect 0, read 0, write 0, timeout 1732</span><br><span class="line">Requests/sec:  43807.48</span><br><span class="line">Transfer/sec:      7.14MB</span><br></pre></td></tr></table></figure>
+总结<br><img src="/../images/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/tests.jpeg"></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/11/git-%E4%BD%BF%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -168,10 +249,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2024-03-11 16:58:14 / Modified: 09:29:33" itemprop="dateCreated datePublished" datetime="2024-03-11T16:58:14+00:00">2024-03-11</time>
+              <time title="Created: 2024-03-11 16:58:14" itemprop="dateCreated datePublished" datetime="2024-03-11T16:58:14+00:00">2024-03-11</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-03-13 09:25:18" itemprop="dateModified" datetime="2024-03-13T09:25:18+00:00">2024-03-13</time>
+              </span>
 
           
 
@@ -246,10 +333,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2024-03-11 10:34:27 / Modified: 09:29:33" itemprop="dateCreated datePublished" datetime="2024-03-11T10:34:27+00:00">2024-03-11</time>
+              <time title="Created: 2024-03-11 10:34:27" itemprop="dateCreated datePublished" datetime="2024-03-11T10:34:27+00:00">2024-03-11</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-03-13 09:25:18" itemprop="dateModified" datetime="2024-03-13T09:25:18+00:00">2024-03-13</time>
+              </span>
 
           
 
@@ -317,7 +410,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-03-11 09:29:33" itemprop="dateModified" datetime="2024-03-11T09:29:33+00:00">2024-03-11</time>
+                <time title="Modified: 2024-03-13 09:25:18" itemprop="dateModified" datetime="2024-03-13T09:25:18+00:00">2024-03-13</time>
               </span>
 
           
@@ -393,7 +486,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-03-11 09:29:33" itemprop="dateModified" datetime="2024-03-11T09:29:33+00:00">2024-03-11</time>
+                <time title="Modified: 2024-03-13 09:25:18" itemprop="dateModified" datetime="2024-03-13T09:25:18+00:00">2024-03-13</time>
               </span>
 
           
@@ -485,7 +578,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-03-11 09:29:33" itemprop="dateModified" datetime="2024-03-11T09:29:33+00:00">2024-03-11</time>
+                <time title="Modified: 2024-03-13 09:25:18" itemprop="dateModified" datetime="2024-03-13T09:25:18+00:00">2024-03-13</time>
               </span>
 
           
@@ -562,7 +655,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-03-11 09:29:33" itemprop="dateModified" datetime="2024-03-11T09:29:33+00:00">2024-03-11</time>
+                <time title="Modified: 2024-03-13 09:25:18" itemprop="dateModified" datetime="2024-03-13T09:25:18+00:00">2024-03-13</time>
               </span>
 
           
@@ -648,7 +741,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-03-11 09:29:33" itemprop="dateModified" datetime="2024-03-11T09:29:33+00:00">2024-03-11</time>
+                <time title="Modified: 2024-03-13 09:25:18" itemprop="dateModified" datetime="2024-03-13T09:25:18+00:00">2024-03-13</time>
               </span>
 
           
@@ -718,7 +811,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-03-11 09:29:33" itemprop="dateModified" datetime="2024-03-11T09:29:33+00:00">2024-03-11</time>
+                <time title="Modified: 2024-03-13 09:25:18" itemprop="dateModified" datetime="2024-03-13T09:25:18+00:00">2024-03-13</time>
               </span>
 
           
@@ -811,7 +904,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-03-11 09:29:33" itemprop="dateModified" datetime="2024-03-11T09:29:33+00:00">2024-03-11</time>
+                <time title="Modified: 2024-03-13 09:25:18" itemprop="dateModified" datetime="2024-03-13T09:25:18+00:00">2024-03-13</time>
               </span>
 
           
@@ -829,74 +922,6 @@
 <h2 id="python重写"><a href="#python重写" class="headerlink" title="python重写"></a>python重写</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">nlmsghdr_format = <span class="string">&quot;=IHHII&quot;</span></span><br><span class="line">ifinfomsg_format = <span class="string">&quot;=BBHiII&quot;</span></span><br><span class="line">ifaddrmsg_format = <span class="string">&quot;=BBBBI&quot;</span></span><br><span class="line">rtattr_format = <span class="string">&quot;=HH&quot;</span></span><br><span class="line">nlmsghdr_size = <span class="number">16</span></span><br><span class="line">ifinfomsg_size = <span class="number">16</span></span><br><span class="line">ifaddrmsg_size = <span class="number">8</span></span><br><span class="line">rtattr_size = <span class="number">4</span></span><br><span class="line"></span><br><span class="line">RTM_NEWROUTE = <span class="number">24</span></span><br><span class="line">RTM_DELROUTE = <span class="number">25</span></span><br><span class="line">IFA_LOCAL = <span class="number">2</span></span><br><span class="line">IFLA_IFNAME = <span class="number">3</span></span><br><span class="line">IFLA_MAX = <span class="number">51</span></span><br><span class="line">RTMGRP_LINK = <span class="number">1</span></span><br><span class="line">RTMGRP_IPV4_IFADDR = <span class="number">0x10</span></span><br><span class="line">RTMGRP_IPV4_ROUTE = <span class="number">0x40</span></span><br><span class="line">IFF_UP = <span class="number">0x1</span></span><br><span class="line">IFF_RUNNING = <span class="number">0x40</span></span><br><span class="line">RTM_DELADDR = <span class="number">21</span></span><br><span class="line">RTM_DELLINK = <span class="number">17</span></span><br><span class="line">RTM_NEWLINK = <span class="number">16</span></span><br><span class="line">RTM_NEWADDR = <span class="number">20</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sock = socket.socket(socket.AF_NETLINK, socket.SOCK_RAW, socket.NETLINK_ROUTE)</span><br><span class="line">sock.bind((os.getpid(), RTMGRP_LINK | RTMGRP_IPV4_IFADDR | RTMGRP_IPV4_ROUTE))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">parseRtattr</span>(<span class="params">rta, msg_len, ifla_rta_ix</span>):</span><br><span class="line">    RTA_ALIGNTO = <span class="number">4</span></span><br><span class="line">    RTA_ALIGN = <span class="keyword">lambda</span> Length : (Length + RTA_ALIGNTO - <span class="number">1</span>) &amp; ~(RTA_ALIGNTO - <span class="number">1</span>)</span><br><span class="line">    tb = [<span class="literal">None</span> <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(IFLA_MAX + <span class="number">1</span>)]</span><br><span class="line">    point, size = <span class="number">0</span>, <span class="built_in">len</span>(rta)</span><br><span class="line">    rta_len, rta_type = struct.unpack(rtattr_format, rta[point : rtattr_size])</span><br><span class="line">    <span class="keyword">while</span> msg_len &gt;= rtattr_size <span class="keyword">and</span> rtattr_size &lt;= rta_len &lt;= msg_len <span class="keyword">and</span> point + rtattr_size &lt;= size:</span><br><span class="line">        rta_len, rta_type = struct.unpack(rtattr_format, rta[point : point + rtattr_size])</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;point is &#123;&#125;&quot;</span>.<span class="built_in">format</span>(point))</span><br><span class="line">        <span class="keyword">if</span> rta_type &lt;= IFLA_MAX:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;rta_type is &#123;&#125;, rta_len is &#123;&#125;, rta is &#123;&#125;&quot;</span>.<span class="built_in">format</span>(rta_type, rta_len, ifla_rta_ix + point))</span><br><span class="line">            tb[rta_type] = ifla_rta_ix + point + rtattr_size</span><br><span class="line">        point += RTA_ALIGN(rta_len)</span><br><span class="line">        msg_len -= RTA_ALIGN(rta_len)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> tb</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    data = sock.recv(<span class="number">8192</span>)</span><br><span class="line">    nlmsghdr = data[<span class="number">0</span>:nlmsghdr_size]</span><br><span class="line"></span><br><span class="line">    msg_len, msg_type, flags, seq, pid = struct.unpack(nlmsghdr_format, nlmsghdr)</span><br><span class="line">    <span class="keyword">if</span> msg_type == RTM_NEWROUTE <span class="keyword">or</span> msg_type == RTM_DELROUTE:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Routing table was changed&quot;</span>)</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    <span class="comment"># print(&quot;msg_len=&#123;&#125;\t msg_type=&#123;&#125;\t flags=&#123;&#125;\t seq=&#123;&#125;\t pid=&#123;&#125;&quot;.format(msg_len, msg_type, flags, seq, pid))</span></span><br><span class="line">    <span class="comment"># print(len(data))</span></span><br><span class="line">    <span class="comment"># parser struct ifinfomsg</span></span><br><span class="line">    <span class="comment"># unsigned really is a shorthand for unsigned int, and so defined in standard C</span></span><br><span class="line">    <span class="comment"># https://stackoverflow.com/questions/1171839/what-is-the-unsigned-datatype</span></span><br><span class="line">    ifinfomsg = data[nlmsghdr_size : nlmsghdr_size + ifinfomsg_size]</span><br><span class="line">    ifi_family, __ifi_pad, ifi_type, ifi_index, ifi_flags, ifi_change = struct.unpack(ifinfomsg_format, ifinfomsg)</span><br><span class="line">    <span class="comment"># print(&quot;ifi_family=&#123;&#125;\t__ifi_pad=&#123;&#125;\tifi_type=&#123;&#125;\tifi_index=&#123;&#125;\tifi_flags=&#123;&#125;\tifi_change=&#123;&#125;&quot;.format(ifi_family, __ifi_pad, ifi_type, ifi_index, ifi_flags, ifi_change))</span></span><br><span class="line">    </span><br><span class="line">    ifla_rta = data[nlmsghdr_size + ifinfomsg_size :]</span><br><span class="line">    tb = parseRtattr(ifla_rta, msg_len, nlmsghdr_size + ifinfomsg_size)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> tb[IFLA_IFNAME]:</span><br><span class="line">        <span class="comment"># may </span></span><br><span class="line">        <span class="keyword">for</span> ix <span class="keyword">in</span> <span class="built_in">range</span>(tb[IFLA_IFNAME], <span class="built_in">len</span>(data)):</span><br><span class="line">            <span class="keyword">if</span> data[ix] == <span class="string">&#x27;\x00&#x27;</span>: <span class="keyword">break</span></span><br><span class="line">        ifName_format = <span class="string">&quot;=&quot;</span> + <span class="string">&quot;c&quot;</span> * (ix - tb[IFLA_IFNAME])</span><br><span class="line">        ifName = <span class="string">&#x27;&#x27;</span>.join(struct.unpack(ifName_format, data[tb[IFLA_IFNAME] : ix]))</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;ifName is &#123;&#125;&quot;</span>.<span class="built_in">format</span>(ifName))</span><br><span class="line">    <span class="keyword">if</span> ifi_flags &amp; IFF_UP:</span><br><span class="line">        ifUpp = <span class="string">&quot;UP&quot;</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        ifUpp = <span class="string">&quot;DOWN&quot;</span></span><br><span class="line">    <span class="built_in">print</span>(ifUpp)</span><br><span class="line">    <span class="keyword">if</span> ifi_flags &amp; IFF_RUNNING:</span><br><span class="line">        ifRunn = <span class="string">&quot;RUNNING&quot;</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        ifRunn = <span class="string">&quot;NOT RUNNING&quot;</span></span><br><span class="line">    <span class="built_in">print</span>(ifRunn)</span><br><span class="line">    ifaddrmsg = data[nlmsghdr_size : nlmsghdr_size + ifaddrmsg_size]</span><br><span class="line">    ifa_family, ifa_prefixlen, ifa_flags, ifa_scope, ifa_index = struct.unpack(ifaddrmsg_format, ifaddrmsg)</span><br><span class="line">    ifa = data[nlmsghdr_size + ifaddrmsg_size :]</span><br><span class="line">    tba = parseRtattr(ifa, msg_len, nlmsghdr_size + ifaddrmsg_size)</span><br><span class="line">    <span class="keyword">if</span> tba[IFA_LOCAL]:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> data[tba[IFA_LOCAL] : tba[IFA_LOCAL] + <span class="number">4</span>]:</span><br><span class="line">            <span class="built_in">print</span>(<span class="built_in">ord</span>(i))</span><br><span class="line">        ifAddress = <span class="string">&#x27;.&#x27;</span>.join(<span class="built_in">str</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> struct.unpack(<span class="string">&#x27;=BBBB&#x27;</span>, data[tba[IFA_LOCAL] : tba[IFA_LOCAL] + <span class="number">4</span> ]))</span><br><span class="line">    <span class="keyword">if</span> msg_type == RTM_DELADDR:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Interface &#123;&#125;: address was removed&quot;</span>.<span class="built_in">format</span>(ifName))</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="keyword">elif</span> msg_type == RTM_DELLINK:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Network interface &#123;&#125; was removed&quot;</span>.<span class="built_in">format</span>(ifName))</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="keyword">elif</span> msg_type == RTM_NEWLINK:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;New network interface &#123;&#125;, state: &#123;&#125; &#123;&#125;&quot;</span>.<span class="built_in">format</span>(ifName, ifUpp, ifRunn))</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="keyword">elif</span> msg_type == RTM_NEWADDR:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Interface &#123;&#125;: new address was assigned: &#123;&#125;&quot;</span>.<span class="built_in">format</span>(ifName, ifAddress))</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">close(sock)</span><br></pre></td></tr></table></figure>
 <h2 id="epoll的两种工作模式"><a href="#epoll的两种工作模式" class="headerlink" title="epoll的两种工作模式"></a>epoll的两种工作模式</h2><p><code>LT(水平触发)</code>,<code>ET(边缘触发)</code>  </p>
 <p><code>LT模式</code>: 支持阻塞和非阻塞套接字<br><code>ET模式</code>: 只支持非阻塞套接字</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/31/2022%E5%B9%B4%E7%BB%88/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/12/31/2022%E5%B9%B4%E7%BB%88/" class="post-title-link" itemprop="url">2022年终</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-12-31 21:19:19" itemprop="dateCreated datePublished" datetime="2022-12-31T21:19:19+00:00">2022-12-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-03-11 09:29:33" itemprop="dateModified" datetime="2024-03-11T09:29:33+00:00">2024-03-11</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="胡思乱想"><a href="#胡思乱想" class="headerlink" title="胡思乱想"></a>胡思乱想</h2><p>2022年对我来说真的是一个非常不平常的一年。<strong>悲伤</strong>应该是我今年的关键词。几乎大部分闲暇时间都是悲伤度过的。我有无数次想通过写博客来排毒。  对于这些种种的消极情绪，我知道不好，我也知道自己很naive。可是仿佛是控制不住似的，我也无力改变。so,我非常感谢我周围的朋友。没有这些朋友我可能真的会crash掉。<br>感情是一个非常珍贵的东西。两个人彼此相信，彼此宠溺，共同面对共同的未来。都是非常难得的事情。毕竟每个人成长的环境不同，接触到的教育信息不同，彼此相互兼容真的是很难的。或许是出于职业的天真，程序员天生是要修bug的，所以当我遇到问题的时候，都是在想这个问题，我能解，我可以单步调试，定位问题，解决问题。所以我自责，我焦虑，我后悔。<br><img src="/../images/2022%E5%B9%B4%E7%BB%88/img_1.jpg"><br>今年的有段时间非常喜欢这样的一句话:<em>当你老了回顾一生就会发觉：何时出国读书、何时决定做第一份职业、何时选定了对象而恋爱、何时结婚，其实都是命运的巨变。只是当时站在三岔路口，眼见风云千樯，你作出抉择的那一日，在日记上，相当的沉闷和平凡，<strong>当时还以为是生命中普通的一天。</strong></em> 作为小镇错题家的我，是没有什么深谋远虑的规划，甚至还有好多不懂事的地方。所以我对于自己的好多决定都是基于贪心算法的。基于当时的定义域求一个局部的最优解。所以我从厦门到了深圳，又从深圳来了南京。而且当时做这些决定的时候，真的是无所畏惧。义无反顾。<br><img src="/../images/2022%E5%B9%B4%E7%BB%88/img_2.jpg"><br>在知乎上看到这样的观点：现代人的精神内耗非常严重。其中核心的原因是——焦虑源于无能，抑郁产自孤独。无能：照顾不好一个人（自己），照顾不好两个人（识人、脱单、经营亲密关系）… 孤独：和自己想法相似的人越来越少，能融入的圈子越来越少。<br>怎么才能解决这些精神内耗呢？我想肯定不是所谓的二舅。我认同的想法是——<strong>爱能治愈一切，做一个温柔且有力量的人。</strong> </p>
-<h2 id="奇怪的知识"><a href="#奇怪的知识" class="headerlink" title="奇怪的知识"></a>奇怪的知识</h2><p>sicp是一本好书，对我的编码能力提升了不少。让我更熟练的使用lambda表达式，理解dfs，体会抽象的作用。关于抽象，我想说两句。抽象是优雅的，举个例子，你无需详细了解http报文的细节。但你可以优雅的使用<a target="_blank" rel="noopener" href="https://cn.python-requests.org/zh_CN/latest/">requests</a>去做爬虫。你也可以优雅的使用<a target="_blank" rel="noopener" href="https://flask.palletsprojects.com/en/2.2.x/quickstart/">flask</a>去做web开发。这里也解释了什么是框架。<br>抽象也有evil的一面(个人观点）。对自学的小白是非常的不友好。因为小白不知道自己处在哪个抽象层，所以可能会产生盲目的浪费时间。当然抽象的东西太多的时候，对于初次接触框架代码的人，很容易产生畏难，劝退的情绪。csapp是一本好书，我也曾通宵去完成<em>拆炸弹</em>这个实验。<a target="_blank" rel="noopener" href="http://jyywiki.cn/OS/2022/">jyy</a>老师，是我目前接触到的国内最高质量计算机课程。 </p>
-<p>记录一下力扣今年的刷题情况，好像比我前几年的总刷题量都要多。<br><img src="/../images/2022%E5%B9%B4%E7%BB%88/lc_%E7%BB%9F%E8%AE%A1.jpg"><br>可是最近让我担心的是，我现在所处的环境需要我这么卷的去学这些东西吗？或者说我还有机会吗？毕竟<strong>一个人的命运，当然要靠自我奋斗，但也要考虑历史的进程。</strong></p>
-<h2 id="天马行空的想法"><a href="#天马行空的想法" class="headerlink" title="天马行空的想法"></a>天马行空的想法</h2><p>时间很宝贵，我希望自己做些有用的事。提高姿(知)势（识）水平。一切都在进步，2023继续加油。<br><img src="/../images/2022%E5%B9%B4%E7%BB%88/lc_1.jpg"></p>
 
       
     </div>
@@ -981,7 +1006,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

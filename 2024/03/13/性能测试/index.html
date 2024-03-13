@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="性能测试的重要性因为最近用到的性能测试工具比较多，例如fio, wrk。所以难免有一些感慨。计算机是一个严格的科学工具，里边没有黑魔法，里边所有的东西都是可以测量的。什么是科学？科学具有可证伪性，可检验性。有个有趣的段子： 12你要是推翻西医里的理论，那是可以拿诺奖的。你要是推翻中医里的理论。那后果... 回忆之前在课本里学到了很多概念，例如时间复杂度分析，学的时候觉得很枯燥，彷佛用不上。平时自己">
+<meta property="og:type" content="article">
+<meta property="og:title" content="性能测试">
+<meta property="og:url" content="http://example.com/2024/03/13/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="性能测试的重要性因为最近用到的性能测试工具比较多，例如fio, wrk。所以难免有一些感慨。计算机是一个严格的科学工具，里边没有黑魔法，里边所有的东西都是可以测量的。什么是科学？科学具有可证伪性，可检验性。有个有趣的段子： 12你要是推翻西医里的理论，那是可以拿诺奖的。你要是推翻中医里的理论。那后果... 回忆之前在课本里学到了很多概念，例如时间复杂度分析，学的时候觉得很枯燥，彷佛用不上。平时自己">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/access_time.png">
+<meta property="og:image" content="http://example.com/images/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/Htop.png">
+<meta property="og:image" content="http://example.com/images/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/tests.jpeg">
+<meta property="article:published_time" content="2024-03-13T15:28:39.000Z">
+<meta property="article:modified_time" content="2024-03-13T09:25:18.768Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/access_time.png">
+
+<link rel="canonical" href="http://example.com/2024/03/13/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>性能测试 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/13/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          性能测试
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-03-13 15:28:39 / Modified: 09:25:18" itemprop="dateCreated datePublished" datetime="2024-03-13T15:28:39+00:00">2024-03-13</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="性能测试的重要性"><a href="#性能测试的重要性" class="headerlink" title="性能测试的重要性"></a>性能测试的重要性</h1><p>因为最近用到的性能测试工具比较多，例如<a target="_blank" rel="noopener" href="https://github.com/axboe/fio"><strong>fio</strong></a>, <a target="_blank" rel="noopener" href="https://github.com/wg/wrk"><strong>wrk</strong></a>。所以难免有一些感慨。<br>计算机是一个严格的科学工具，里边没有黑魔法，里边所有的东西都是可以测量的。什么是科学？科学具有可证伪性，可检验性。有个有趣的段子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">你要是推翻西医里的理论，那是可以拿诺奖的。</span><br><span class="line">你要是推翻中医里的理论。那后果...</span><br></pre></td></tr></table></figure>
+<p>回忆之前在课本里学到了很多概念，例如时间复杂度分析，学的时候觉得很枯燥，彷佛用不上。平时自己写的小程序，在自己的个人电脑上也都是瞬间执行结束的。根本体会不到时间复杂度的重要性。直到我在leetcode上遇到1G的数据量时，我才真正的体会到了时间复杂度的重要。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>log(<span class="number">10</span>**<span class="number">9</span>,<span class="number">2</span>)</span><br><span class="line"><span class="number">29.897352853986263</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">10</span>**<span class="number">9</span> / log(<span class="number">10</span>**<span class="number">9</span>,<span class="number">2</span>)</span><br><span class="line"><span class="number">33447777.29599791</span></span><br></pre></td></tr></table></figure>
+<p>不知道，你有没有对这个计算结果吃惊呢？<br>有的时候我就在想：是计算机太快了，绝大多数普通人是感受不到毫秒级的延迟的。当然更重要的是好多人也不会遇到这样的问题，毕竟能有百万并发的场景是少数大厂。既然遇不到这样的问题，那么所有的知识，就会变得枯燥。<br><strong>Latency Numbers Every Programmer Should Know</strong><br><img src="/../images/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/access_time.png"></p>
+<p><strong>anyway</strong>所有的东西都是可以测试的，可以通过数学去计算，度量的。去分析瓶颈在哪里，看<strong>Htop</strong>, <strong>火焰图</strong>，<strong>iostat</strong>,最后分析讨论该怎么优化。<br>记得用成熟的工具去测试，否则盲目的人肉测试是不科学的。</p>
+<h1 id="Http性能测试"><a href="#Http性能测试" class="headerlink" title="Http性能测试"></a>Http性能测试</h1><p>无意中发现了一个非常simple的<a target="_blank" rel="noopener" href="https://github.com/trungams/http-server">http-server</a>, 还是那句话，http的本质是确定格式的文本读写。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wrk -t12 -c400 -d30s http://127.0.0.1:7890</span><br></pre></td></tr></table></figure>
+<p>结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Running 30s test @ http://127.0.0.1:7890</span><br><span class="line">  12 threads and 400 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency   800.64us    3.95ms 202.80ms   99.83%</span><br><span class="line">    Req/Sec    47.56k     5.41k   98.40k    89.10%</span><br><span class="line">  17068381 requests in 30.10s, 1.24GB read</span><br><span class="line">Requests/sec: 567065.38</span><br><span class="line">Transfer/sec:     42.18MB</span><br></pre></td></tr></table></figure>
+<p>Htop<br><img src="/../images/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/Htop.png"></p>
+<p>对比一下之前的常用的<a target="_blank" rel="noopener" href="https://github.com/pallets/flask"><strong>Flask</strong></a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(venv) [root@node1 demo-flask]# python demo.py</span><br><span class="line"> * Serving Flask app &#x27;demo&#x27; (lazy loading)</span><br><span class="line"> * Environment: production</span><br><span class="line">   WARNING: This is a development server. Do not use it in a production deployment.</span><br><span class="line">   Use a production WSGI server instead.</span><br><span class="line"> * Debug mode: off</span><br><span class="line"> * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 wrk]# ./wrk -t12 -c400 -d30s http://127.0.0.1:5000</span><br><span class="line">Running 30s test @ http://127.0.0.1:5000</span><br><span class="line">  12 threads and 400 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency   284.32ms  178.98ms   1.96s    81.05%</span><br><span class="line">    Req/Sec    71.11     42.46   292.00     73.87%</span><br><span class="line">  24828 requests in 30.03s, 3.93MB read</span><br><span class="line">  Socket errors: connect 0, read 0, write 0, timeout 131</span><br><span class="line">Requests/sec:    826.80</span><br><span class="line">Transfer/sec:    134.03KB</span><br></pre></td></tr></table></figure>
+
+<p>加上WSGI</p>
+<ul>
+<li>四进程<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(venv) [root@node1 demo-flask]# gunicorn -w 4 -k gevent demo:app -b :7889</span><br><span class="line">[2024-03-13 08:49:25 +0000] [220624] [INFO] Starting gunicorn 21.2.0</span><br><span class="line">[2024-03-13 08:49:25 +0000] [220624] [INFO] Listening at: http://0.0.0.0:7889 (220624)</span><br><span class="line">[2024-03-13 08:49:25 +0000] [220624] [INFO] Using worker: gevent</span><br><span class="line">[2024-03-13 08:49:25 +0000] [220627] [INFO] Booting worker with pid: 220627</span><br><span class="line">[2024-03-13 08:49:25 +0000] [220628] [INFO] Booting worker with pid: 220628</span><br><span class="line">[2024-03-13 08:49:25 +0000] [220629] [INFO] Booting worker with pid: 220629</span><br><span class="line">[2024-03-13 08:49:26 +0000] [220630] [INFO] Booting worker with pid: 220630</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 wrk]# ./wrk -t12 -c400 -d30s http://127.0.0.1:7889</span><br><span class="line">Running 30s test @ http://127.0.0.1:7889</span><br><span class="line">  12 threads and 400 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency    24.68ms  147.52ms   2.00s    96.66%</span><br><span class="line">    Req/Sec     3.44k     3.16k   11.86k    53.42%</span><br><span class="line">  353945 requests in 30.04s, 57.72MB read</span><br><span class="line">  Socket errors: connect 0, read 0, write 0, timeout 502</span><br><span class="line">Requests/sec:  11782.63</span><br><span class="line">Transfer/sec:      1.92MB</span><br></pre></td></tr></table></figure></li>
+<li>八进程<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 wrk]# ./wrk -t12 -c400 -d30s http://127.0.0.1:7889</span><br><span class="line">Running 30s test @ http://127.0.0.1:7889</span><br><span class="line">  12 threads and 400 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency    13.29ms  107.98ms   2.00s    98.02%</span><br><span class="line">    Req/Sec     4.49k     2.79k   17.94k    71.28%</span><br><span class="line">  709308 requests in 30.04s, 115.67MB read</span><br><span class="line">  Socket errors: connect 0, read 11, write 0, timeout 445</span><br><span class="line">Requests/sec:  23612.98</span><br><span class="line">Transfer/sec:      3.85MB</span><br></pre></td></tr></table></figure></li>
+<li>十六进程<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 wrk]# ./wrk -t12 -c400 -d30s http://127.0.0.1:7889</span><br><span class="line">Running 30s test @ http://127.0.0.1:7889</span><br><span class="line">  12 threads and 400 connections</span><br><span class="line">  Thread Stats   Avg      Stdev     Max   +/- Stdev</span><br><span class="line">    Latency    86.79ms  283.99ms   2.00s    91.56%</span><br><span class="line">    Req/Sec     4.73k     3.01k   28.13k    67.26%</span><br><span class="line">  1318602 requests in 30.10s, 215.04MB read</span><br><span class="line">  Socket errors: connect 0, read 0, write 0, timeout 1732</span><br><span class="line">Requests/sec:  43807.48</span><br><span class="line">Transfer/sec:      7.14MB</span><br></pre></td></tr></table></figure>
+总结<br><img src="/../images/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/tests.jpeg"></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/03/11/git-%E4%BD%BF%E7%94%A8/" rel="prev" title="git 使用">
+      <i class="fa fa-chevron-left"></i> git 使用
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E7%9A%84%E9%87%8D%E8%A6%81%E6%80%A7"><span class="nav-number">1.</span> <span class="nav-text">性能测试的重要性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Http%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95"><span class="nav-number">2.</span> <span class="nav-text">Http性能测试</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
