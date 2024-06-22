@@ -145,6 +145,74 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/24/%E4%BD%BF%E7%94%A8Netlink%E7%9B%91%E6%B5%8Blinux%E7%BD%91%E7%BB%9C%E7%8A%B6%E6%80%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/02/24/%E4%BD%BF%E7%94%A8Netlink%E7%9B%91%E6%B5%8Blinux%E7%BD%91%E7%BB%9C%E7%8A%B6%E6%80%81/" class="post-title-link" itemprop="url">使用Netlink监测linux网络状态</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-02-24 09:44:43" itemprop="dateCreated datePublished" datetime="2023-02-24T09:44:43+00:00">2023-02-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-06-22 07:37:30" itemprop="dateModified" datetime="2024-06-22T07:37:30+00:00">2024-06-22</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p> <a target="_blank" rel="noopener" href="https://olegkutkov.me/2018/02/14/monitoring-linux-networking-state-using-netlink/">monitoring-linux-networking-state-using-netlink</a>  </p>
+<h2 id="python重写"><a href="#python重写" class="headerlink" title="python重写"></a>python重写</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">nlmsghdr_format = <span class="string">&quot;=IHHII&quot;</span></span><br><span class="line">ifinfomsg_format = <span class="string">&quot;=BBHiII&quot;</span></span><br><span class="line">ifaddrmsg_format = <span class="string">&quot;=BBBBI&quot;</span></span><br><span class="line">rtattr_format = <span class="string">&quot;=HH&quot;</span></span><br><span class="line">nlmsghdr_size = <span class="number">16</span></span><br><span class="line">ifinfomsg_size = <span class="number">16</span></span><br><span class="line">ifaddrmsg_size = <span class="number">8</span></span><br><span class="line">rtattr_size = <span class="number">4</span></span><br><span class="line"></span><br><span class="line">RTM_NEWROUTE = <span class="number">24</span></span><br><span class="line">RTM_DELROUTE = <span class="number">25</span></span><br><span class="line">IFA_LOCAL = <span class="number">2</span></span><br><span class="line">IFLA_IFNAME = <span class="number">3</span></span><br><span class="line">IFLA_MAX = <span class="number">51</span></span><br><span class="line">RTMGRP_LINK = <span class="number">1</span></span><br><span class="line">RTMGRP_IPV4_IFADDR = <span class="number">0x10</span></span><br><span class="line">RTMGRP_IPV4_ROUTE = <span class="number">0x40</span></span><br><span class="line">IFF_UP = <span class="number">0x1</span></span><br><span class="line">IFF_RUNNING = <span class="number">0x40</span></span><br><span class="line">RTM_DELADDR = <span class="number">21</span></span><br><span class="line">RTM_DELLINK = <span class="number">17</span></span><br><span class="line">RTM_NEWLINK = <span class="number">16</span></span><br><span class="line">RTM_NEWADDR = <span class="number">20</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sock = socket.socket(socket.AF_NETLINK, socket.SOCK_RAW, socket.NETLINK_ROUTE)</span><br><span class="line">sock.bind((os.getpid(), RTMGRP_LINK | RTMGRP_IPV4_IFADDR | RTMGRP_IPV4_ROUTE))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">parseRtattr</span>(<span class="params">rta, msg_len, ifla_rta_ix</span>):</span><br><span class="line">    RTA_ALIGNTO = <span class="number">4</span></span><br><span class="line">    RTA_ALIGN = <span class="keyword">lambda</span> Length : (Length + RTA_ALIGNTO - <span class="number">1</span>) &amp; ~(RTA_ALIGNTO - <span class="number">1</span>)</span><br><span class="line">    tb = [<span class="literal">None</span> <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(IFLA_MAX + <span class="number">1</span>)]</span><br><span class="line">    point, size = <span class="number">0</span>, <span class="built_in">len</span>(rta)</span><br><span class="line">    rta_len, rta_type = struct.unpack(rtattr_format, rta[point : rtattr_size])</span><br><span class="line">    <span class="keyword">while</span> msg_len &gt;= rtattr_size <span class="keyword">and</span> rtattr_size &lt;= rta_len &lt;= msg_len <span class="keyword">and</span> point + rtattr_size &lt;= size:</span><br><span class="line">        rta_len, rta_type = struct.unpack(rtattr_format, rta[point : point + rtattr_size])</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;point is &#123;&#125;&quot;</span>.<span class="built_in">format</span>(point))</span><br><span class="line">        <span class="keyword">if</span> rta_type &lt;= IFLA_MAX:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;rta_type is &#123;&#125;, rta_len is &#123;&#125;, rta is &#123;&#125;&quot;</span>.<span class="built_in">format</span>(rta_type, rta_len, ifla_rta_ix + point))</span><br><span class="line">            tb[rta_type] = ifla_rta_ix + point + rtattr_size</span><br><span class="line">        point += RTA_ALIGN(rta_len)</span><br><span class="line">        msg_len -= RTA_ALIGN(rta_len)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> tb</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    data = sock.recv(<span class="number">8192</span>)</span><br><span class="line">    nlmsghdr = data[<span class="number">0</span>:nlmsghdr_size]</span><br><span class="line"></span><br><span class="line">    msg_len, msg_type, flags, seq, pid = struct.unpack(nlmsghdr_format, nlmsghdr)</span><br><span class="line">    <span class="keyword">if</span> msg_type == RTM_NEWROUTE <span class="keyword">or</span> msg_type == RTM_DELROUTE:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Routing table was changed&quot;</span>)</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    <span class="comment"># print(&quot;msg_len=&#123;&#125;\t msg_type=&#123;&#125;\t flags=&#123;&#125;\t seq=&#123;&#125;\t pid=&#123;&#125;&quot;.format(msg_len, msg_type, flags, seq, pid))</span></span><br><span class="line">    <span class="comment"># print(len(data))</span></span><br><span class="line">    <span class="comment"># parser struct ifinfomsg</span></span><br><span class="line">    <span class="comment"># unsigned really is a shorthand for unsigned int, and so defined in standard C</span></span><br><span class="line">    <span class="comment"># https://stackoverflow.com/questions/1171839/what-is-the-unsigned-datatype</span></span><br><span class="line">    ifinfomsg = data[nlmsghdr_size : nlmsghdr_size + ifinfomsg_size]</span><br><span class="line">    ifi_family, __ifi_pad, ifi_type, ifi_index, ifi_flags, ifi_change = struct.unpack(ifinfomsg_format, ifinfomsg)</span><br><span class="line">    <span class="comment"># print(&quot;ifi_family=&#123;&#125;\t__ifi_pad=&#123;&#125;\tifi_type=&#123;&#125;\tifi_index=&#123;&#125;\tifi_flags=&#123;&#125;\tifi_change=&#123;&#125;&quot;.format(ifi_family, __ifi_pad, ifi_type, ifi_index, ifi_flags, ifi_change))</span></span><br><span class="line">    </span><br><span class="line">    ifla_rta = data[nlmsghdr_size + ifinfomsg_size :]</span><br><span class="line">    tb = parseRtattr(ifla_rta, msg_len, nlmsghdr_size + ifinfomsg_size)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> tb[IFLA_IFNAME]:</span><br><span class="line">        <span class="comment"># may </span></span><br><span class="line">        <span class="keyword">for</span> ix <span class="keyword">in</span> <span class="built_in">range</span>(tb[IFLA_IFNAME], <span class="built_in">len</span>(data)):</span><br><span class="line">            <span class="keyword">if</span> data[ix] == <span class="string">&#x27;\x00&#x27;</span>: <span class="keyword">break</span></span><br><span class="line">        ifName_format = <span class="string">&quot;=&quot;</span> + <span class="string">&quot;c&quot;</span> * (ix - tb[IFLA_IFNAME])</span><br><span class="line">        ifName = <span class="string">&#x27;&#x27;</span>.join(struct.unpack(ifName_format, data[tb[IFLA_IFNAME] : ix]))</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;ifName is &#123;&#125;&quot;</span>.<span class="built_in">format</span>(ifName))</span><br><span class="line">    <span class="keyword">if</span> ifi_flags &amp; IFF_UP:</span><br><span class="line">        ifUpp = <span class="string">&quot;UP&quot;</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        ifUpp = <span class="string">&quot;DOWN&quot;</span></span><br><span class="line">    <span class="built_in">print</span>(ifUpp)</span><br><span class="line">    <span class="keyword">if</span> ifi_flags &amp; IFF_RUNNING:</span><br><span class="line">        ifRunn = <span class="string">&quot;RUNNING&quot;</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        ifRunn = <span class="string">&quot;NOT RUNNING&quot;</span></span><br><span class="line">    <span class="built_in">print</span>(ifRunn)</span><br><span class="line">    ifaddrmsg = data[nlmsghdr_size : nlmsghdr_size + ifaddrmsg_size]</span><br><span class="line">    ifa_family, ifa_prefixlen, ifa_flags, ifa_scope, ifa_index = struct.unpack(ifaddrmsg_format, ifaddrmsg)</span><br><span class="line">    ifa = data[nlmsghdr_size + ifaddrmsg_size :]</span><br><span class="line">    tba = parseRtattr(ifa, msg_len, nlmsghdr_size + ifaddrmsg_size)</span><br><span class="line">    <span class="keyword">if</span> tba[IFA_LOCAL]:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> data[tba[IFA_LOCAL] : tba[IFA_LOCAL] + <span class="number">4</span>]:</span><br><span class="line">            <span class="built_in">print</span>(<span class="built_in">ord</span>(i))</span><br><span class="line">        ifAddress = <span class="string">&#x27;.&#x27;</span>.join(<span class="built_in">str</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> struct.unpack(<span class="string">&#x27;=BBBB&#x27;</span>, data[tba[IFA_LOCAL] : tba[IFA_LOCAL] + <span class="number">4</span> ]))</span><br><span class="line">    <span class="keyword">if</span> msg_type == RTM_DELADDR:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Interface &#123;&#125;: address was removed&quot;</span>.<span class="built_in">format</span>(ifName))</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="keyword">elif</span> msg_type == RTM_DELLINK:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Network interface &#123;&#125; was removed&quot;</span>.<span class="built_in">format</span>(ifName))</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="keyword">elif</span> msg_type == RTM_NEWLINK:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;New network interface &#123;&#125;, state: &#123;&#125; &#123;&#125;&quot;</span>.<span class="built_in">format</span>(ifName, ifUpp, ifRunn))</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="keyword">elif</span> msg_type == RTM_NEWADDR:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Interface &#123;&#125;: new address was assigned: &#123;&#125;&quot;</span>.<span class="built_in">format</span>(ifName, ifAddress))</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">close(sock)</span><br></pre></td></tr></table></figure>
+<h2 id="epoll的两种工作模式"><a href="#epoll的两种工作模式" class="headerlink" title="epoll的两种工作模式"></a>epoll的两种工作模式</h2><p><code>LT(水平触发)</code>,<code>ET(边缘触发)</code>  </p>
+<p><code>LT模式</code>: 支持阻塞和非阻塞套接字<br><code>ET模式</code>: 只支持非阻塞套接字</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/31/2022%E5%B9%B4%E7%BB%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -176,7 +244,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-06-16 11:25:24" itemprop="dateModified" datetime="2024-06-16T11:25:24+00:00">2024-06-16</time>
+                <time title="Modified: 2024-06-22 07:37:30" itemprop="dateModified" datetime="2024-06-22T07:37:30+00:00">2024-06-22</time>
               </span>
 
           
@@ -244,7 +312,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-06-16 11:25:24" itemprop="dateModified" datetime="2024-06-16T11:25:24+00:00">2024-06-16</time>
+                <time title="Modified: 2024-06-22 07:37:30" itemprop="dateModified" datetime="2024-06-22T07:37:30+00:00">2024-06-22</time>
               </span>
 
           
@@ -325,7 +393,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-06-16 11:25:24" itemprop="dateModified" datetime="2024-06-16T11:25:24+00:00">2024-06-16</time>
+                <time title="Modified: 2024-06-22 07:37:30" itemprop="dateModified" datetime="2024-06-22T07:37:30+00:00">2024-06-22</time>
               </span>
 
           
@@ -425,7 +493,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-06-16 11:25:24" itemprop="dateModified" datetime="2024-06-16T11:25:24+00:00">2024-06-16</time>
+                <time title="Modified: 2024-06-22 07:37:30" itemprop="dateModified" datetime="2024-06-22T07:37:30+00:00">2024-06-22</time>
               </span>
 
           
@@ -500,7 +568,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-06-16 11:25:24" itemprop="dateModified" datetime="2024-06-16T11:25:24+00:00">2024-06-16</time>
+                <time title="Modified: 2024-06-22 07:37:30" itemprop="dateModified" datetime="2024-06-22T07:37:30+00:00">2024-06-22</time>
               </span>
 
           
@@ -578,7 +646,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-06-16 11:25:24" itemprop="dateModified" datetime="2024-06-16T11:25:24+00:00">2024-06-16</time>
+                <time title="Modified: 2024-06-22 07:37:30" itemprop="dateModified" datetime="2024-06-22T07:37:30+00:00">2024-06-22</time>
               </span>
 
           
@@ -689,7 +757,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
