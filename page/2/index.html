@@ -145,6 +145,99 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/27/ceph-rbd/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/02/27/ceph-rbd/" class="post-title-link" itemprop="url">ceph-rbd</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-02-27 11:55:48" itemprop="dateCreated datePublished" datetime="2023-02-27T11:55:48+00:00">2023-02-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-06-02 17:33:04" itemprop="dateModified" datetime="2025-06-02T17:33:04+00:00">2025-06-02</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/quincy/rbd/index.html">简介</a></h1><h2 id="创建rbd-pool-创建image"><a href="#创建rbd-pool-创建image" class="headerlink" title="创建rbd-pool, 创建image"></a>创建rbd-pool, 创建image</h2><h3 id="CREATE-A-BLOCK-DEVICE-POOL"><a href="#CREATE-A-BLOCK-DEVICE-POOL" class="headerlink" title="CREATE A BLOCK DEVICE POOL"></a>CREATE A BLOCK DEVICE POOL</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">rbd pool init &lt;pool-name&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="CREATE-A-BLOCK-DEVICE-USER"><a href="#CREATE-A-BLOCK-DEVICE-USER" class="headerlink" title="CREATE A BLOCK DEVICE USER"></a>CREATE A BLOCK DEVICE USER</h3><p> 这部分我的理解还不够，暂时略过。直接参考官方文档会更好。  </p>
+<h3 id="CREATING-A-BLOCK-DEVICE-IMAGE"><a href="#CREATING-A-BLOCK-DEVICE-IMAGE" class="headerlink" title="CREATING A BLOCK DEVICE IMAGE"></a>CREATING A BLOCK DEVICE IMAGE</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">rbd create --size &#123;megabytes&#125; &#123;pool-name&#125;/&#123;image-name&#125;</span></span><br></pre></td></tr></table></figure>
+<p>实例</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rbd create nrbd.img --size 50G --pool rbd-pool</span><br></pre></td></tr></table></figure>
+<p>（我好像更喜欢各种风格的命令）</p>
+<h3 id="LISTING-BLOCK-DEVICE-IMAGES"><a href="#LISTING-BLOCK-DEVICE-IMAGES" class="headerlink" title="LISTING BLOCK DEVICE IMAGES"></a>LISTING BLOCK DEVICE IMAGES</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@ceph01 etc]# rbd ls --pool rbd-pool</span><br><span class="line">bar</span><br><span class="line">nnrbd.img</span><br><span class="line">nrbd.img</span><br><span class="line">rbd.img</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@ceph01 etc]# rbd info nnrbd.img --pool rbd-pool</span><br><span class="line">rbd image &#x27;nnrbd.img&#x27;:</span><br><span class="line">        size 50 GiB in 12800 objects</span><br><span class="line">        order 22 (4 MiB objects)</span><br><span class="line">        snapshot_count: 0</span><br><span class="line">        id: cb6eaf54bbe4</span><br><span class="line">        block_name_prefix: rbd_data.cb6eaf54bbe4</span><br><span class="line">        format: 2</span><br><span class="line">        features: layering, exclusive-lock</span><br><span class="line">        op_features:</span><br><span class="line">        flags:</span><br><span class="line">        create_timestamp: Mon Feb 27 11:09:59 2023</span><br><span class="line">        access_timestamp: Mon Feb 27 11:09:59 2023</span><br><span class="line">        modify_timestamp: Mon Feb 27 11:09:59 2023</span><br></pre></td></tr></table></figure>
+
+<h2 id="客户端挂载"><a href="#客户端挂载" class="headerlink" title="客户端挂载"></a>客户端挂载</h2><p>参考这篇<a target="_blank" rel="noopener" href="https://www.cnblogs.com/zhrx/p/16098075.html">博客</a>可以知道</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cephadmin@ceph-deploy:~/ceph-cluster$ sudo scp ceph.conf ceph.client.admin.keyring root@192.168.1.180:/etc/ceph/</span><br></pre></td></tr></table></figure>
+<p>是需要把这些配置文件复制到客户端。<br>ok,我按照这样的操作执行啦。可是接下来的命令不能work。然后我就尝试了好多方法，去定位问题。我去看官方文档，但是似乎并没有合适的解决方法。<br>直到今天早上灵机一动。我想到了<code>server-client</code>通信的问题。所以我就恍然大悟啦。<br>既然要通信，那必须有网络（软件抽象），有网卡（硬件抽象）。那么<code>ceph</code>的通信是需要两个网络的，一个<code>public ip</code>，一个<code>private ip</code>。所以需要在客户端添加一个<code>private ip</code>.</p>
+<h2 id="ip配置"><a href="#ip配置" class="headerlink" title="ip配置"></a>ip配置</h2><p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000011954814">参考链接</a><br>查看网卡配置文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost etc]# cd /etc/sysconfig/network-scripts/</span><br><span class="line">[root@localhost network-scripts]# cat ifcfg-</span><br><span class="line">ifcfg-ens18  ifcfg-eth0   ifcfg-lo</span><br></pre></td></tr></table></figure>
+<p>重启网络</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart network</span><br></pre></td></tr></table></figure>
+<p>检查ceph连接状况</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost etc]# ceph -s</span><br><span class="line">  cluster:</span><br><span class="line">    id:     ba39b878-7aa9-45c3-b9d9-dab4a59bce4f</span><br><span class="line">    health: HEALTH_OK</span><br><span class="line"></span><br><span class="line">  services:</span><br><span class="line">    mon: 1 daemons, quorum mon1 (age 3d)</span><br><span class="line">    mgr: mon1(active, since 3d)</span><br><span class="line">    osd: 6 osds: 6 up (since 3d), 6 in (since 3d)</span><br><span class="line">    rgw: 1 daemon active (1 hosts, 1 zones)</span><br><span class="line"></span><br><span class="line">  data:</span><br><span class="line">    pools:   10 pools, 241 pgs</span><br><span class="line">    objects: 1.51k objects, 4.7 GiB</span><br><span class="line">    usage:   605 GiB used, 4.1 TiB / 4.7 TiB avail</span><br><span class="line">    pgs:     241 active+clean</span><br><span class="line"></span><br><span class="line">  io:</span><br><span class="line">    client:   27 KiB/s rd, 31 op/s rd, 0 op/s wr</span><br></pre></td></tr></table></figure>
+
+<h2 id="新的问题"><a href="#新的问题" class="headerlink" title="新的问题"></a>新的问题</h2><p>下一步我打算下载<code>fio</code>。但是遇到了新的错误。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yum install fio</span></span><br><span class="line">ndctl-libs-65-5.el7.x86_64.rpm FAILED</span><br><span class="line">https://mirrors.tuna.tsinghua.edu.cn/centos/7/os/x86_64/Packages/ndctl-libs-65-5.el7.x86_64.rpm: [Errno 14] curl#6 - &quot;Could not resolve host: mirrors.tuna.tsinghua.edu.cn; Unknown error&quot;</span><br></pre></td></tr></table></figure>
+<p>这错误上周也有遇到过。当时尝试了很多的错误方法，首先我认为是镜像源的问题，于是尝试更换了阿里镜像源，网易镜像源。但是都不行。因为看到是curl报的错，我还认为是curl的问题。<br>但是今天这个场景我就想到了是DNS的问题，因为我新添加的网卡没有配置DNS地址。  </p>
+<p>尝试ping百度也不行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost etc]# ping www.baidu.com</span><br><span class="line">ping: www.baidu.com: Name or service not known</span><br></pre></td></tr></table></figure>
+
+<p>修复方法<br>参考 <a target="_blank" rel="noopener" href="https://unix.stackexchange.com/questions/518266/ping-displays-name-or-service-not-known">stackexchange</a>,<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/43366826/ping-http-google-com-name-or-service-not-known">stackoverflow</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost etc]# cat resolv.conf</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Generated by NetworkManager</span></span><br><span class="line">search domain.name</span><br><span class="line">nameserver 8.8.8.8</span><br><span class="line">nameserver 1.1.1.1</span><br><span class="line">nameserver 1.0.0.1</span><br><span class="line">[root@localhost etc]# systemctl restart NetworkManager</span><br><span class="line">[root@localhost etc]# ping www.baidu.com</span><br><span class="line">PING www.a.shifen.com (180.101.50.242) 56(84) bytes of data.</span><br><span class="line">64 bytes from 180.101.50.242 (180.101.50.242): icmp_seq=1 ttl=53 time=2.46 ms</span><br></pre></td></tr></table></figure>
+<p>（其实我最初的想法是添加路由，但是好像不太行）</p>
+<h2 id="当你对一个东西很熟悉的时候，解决问题的灵感自然就来了。"><a href="#当你对一个东西很熟悉的时候，解决问题的灵感自然就来了。" class="headerlink" title="当你对一个东西很熟悉的时候，解决问题的灵感自然就来了。"></a>当你对一个东西很熟悉的时候，解决问题的灵感自然就来了。</h2>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/24/%E4%BD%BF%E7%94%A8Netlink%E7%9B%91%E6%B5%8Blinux%E7%BD%91%E7%BB%9C%E7%8A%B6%E6%80%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -176,7 +269,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-06-22 07:37:30" itemprop="dateModified" datetime="2024-06-22T07:37:30+00:00">2024-06-22</time>
+                <time title="Modified: 2025-06-02 17:33:04" itemprop="dateModified" datetime="2025-06-02T17:33:04+00:00">2025-06-02</time>
               </span>
 
           
@@ -244,7 +337,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-06-22 07:37:30" itemprop="dateModified" datetime="2024-06-22T07:37:30+00:00">2024-06-22</time>
+                <time title="Modified: 2025-06-02 17:33:04" itemprop="dateModified" datetime="2025-06-02T17:33:04+00:00">2025-06-02</time>
               </span>
 
           
@@ -312,7 +405,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-06-22 07:37:30" itemprop="dateModified" datetime="2024-06-22T07:37:30+00:00">2024-06-22</time>
+                <time title="Modified: 2025-06-02 17:33:04" itemprop="dateModified" datetime="2025-06-02T17:33:04+00:00">2025-06-02</time>
               </span>
 
           
@@ -393,7 +486,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-06-22 07:37:30" itemprop="dateModified" datetime="2024-06-22T07:37:30+00:00">2024-06-22</time>
+                <time title="Modified: 2025-06-02 17:33:04" itemprop="dateModified" datetime="2025-06-02T17:33:04+00:00">2025-06-02</time>
               </span>
 
           
@@ -493,7 +586,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-06-22 07:37:30" itemprop="dateModified" datetime="2024-06-22T07:37:30+00:00">2024-06-22</time>
+                <time title="Modified: 2025-06-02 17:33:04" itemprop="dateModified" datetime="2025-06-02T17:33:04+00:00">2025-06-02</time>
               </span>
 
           
@@ -568,7 +661,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-06-22 07:37:30" itemprop="dateModified" datetime="2024-06-22T07:37:30+00:00">2024-06-22</time>
+                <time title="Modified: 2025-06-02 17:33:04" itemprop="dateModified" datetime="2025-06-02T17:33:04+00:00">2025-06-02</time>
               </span>
 
           
@@ -646,7 +739,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-06-22 07:37:30" itemprop="dateModified" datetime="2024-06-22T07:37:30+00:00">2024-06-22</time>
+                <time title="Modified: 2025-06-02 17:33:04" itemprop="dateModified" datetime="2025-06-02T17:33:04+00:00">2025-06-02</time>
               </span>
 
           
@@ -757,7 +850,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -785,7 +878,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
